@@ -1,0 +1,42 @@
+:root {
+  /* Color */
+  --ink-velvet-deep: #1A0508;
+  --ink-velvet: #3A0C16;
+  --ink-shadow: #0A0203;
+  --accent-mystic: #B26BFF;
+  --accent-mystic-deep: #5B1FAE;
+  --gold-primary: #E6D4A3;
+  --gold-stroke: #A8884A;
+  --gold-dim: #7A6336;
+  --text-primary: #F5E9D2;
+  --text-muted: rgba(245, 233, 210, 0.7);
+  --scrim: rgba(0, 0, 0, 0.55);
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  /* Shadows */
+  --shadow-1: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-3: 0 0 80px rgba(178, 107, 255, 0.45);
+
+  /* CTA Variants */
+  --cta-green-top:    #4a5d3a;
+  --cta-green-bottom: #2b3a1f;
+  --cta-green-text:   #F5E9D2;
+  --cta-amber-top:    #6a4e2a;
+  --cta-amber-bottom: #3a2913;
+  --cta-amber-text:   #F5E9D2;
+
+  /* Orb placement (overridden per breakpoint) */
+  --orb-x: 50%;
+  --orb-y: 55%;
+}
+
+@media (max-width: 640px) {
+  :root {
+    --orb-y: 30%;
+  }
+}

@@ -1,0 +1,40 @@
+import FrameCorners from "./FrameCorners";
+
+interface OrnateTextareaProps {
+  value: string;
+  onChange: (value: string) => void;
+}
+
+export default function OrnateTextarea({ value, onChange }: OrnateTextareaProps) {
+  return (
+    <div
+      className="ornate-textarea-frame relative w-full"
+      style={{
+        background: "rgba(26, 5, 8, 0.72)",
+        border: "1px solid var(--gold-stroke)",
+        borderRadius: "var(--radius-sm)",
+        padding: "20px 28px",
+        minHeight: 140,
+      }}
+    >
+      <FrameCorners />
+      <label htmlFor="question-input" className="sr-only">
+        คำถามของคุณ
+      </label>
+      <textarea
+        id="question-input"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="พิมพ์คำถามของคุณ…(ไม่บังคับ)"
+        rows={4}
+        className="w-full resize-none bg-transparent outline-none placeholder:opacity-60"
+        style={{
+          color: "var(--text-primary)",
+          fontFamily: "inherit",
+          fontSize: "inherit",
+          lineHeight: "inherit",
+        }}
+      />
+    </div>
+  );
+}
