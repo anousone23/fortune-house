@@ -41,7 +41,7 @@ function makeLeaf(): Leaf {
       -sign * (60 + Math.random() * 120),
       sign * (60 + Math.random() * 120),
     ],
-    duration: 11 + Math.random() * 5,
+    duration: 15 + Math.random() * 6,
     xDrift: [
       0,
       (Math.random() - 0.5) * 140,

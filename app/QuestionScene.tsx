@@ -11,6 +11,7 @@ import MagicSparks from "@/components/scene/MagicSparks";
 import FallingPetals from "@/components/scene/FallingPetals";
 import DriedLeaves from "@/components/scene/DriedLeaves";
 import RatEyes from "@/components/scene/RatEyes";
+import Owl from "@/components/scene/Owl";
 import OrnateTextarea from "@/components/ui/OrnateTextarea";
 import TopicChip from "@/components/ui/TopicChip";
 import OrnateButton from "@/components/ui/OrnateButton";
@@ -55,6 +56,7 @@ export default function QuestionScene() {
       <FallingPetals />
       <DriedLeaves />
       <DustMotes />
+      <Owl />
       <RatEyes />
 
       <div

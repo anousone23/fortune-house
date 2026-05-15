@@ -36,6 +36,7 @@ export default function Candelabra({ position }: CandelabraProps) {
       {WICKS.map((wick, i) => (
         <CandleFlame
           key={`flame-${i}`}
+          seed={position === "left" ? i : i + 3}
           style={{
             left: `${wick.xPct}%`,
             top: `${wick.yPct}%`,

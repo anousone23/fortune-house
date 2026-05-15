@@ -1,10 +1,11 @@
 "use client";
 
-import { DotLottieReact } from "@lottiefiles/dotlottie-react";
 import { useSyncExternalStore } from "react";
 
 interface CandleFlameProps {
   style?: React.CSSProperties;
+  /** 0..5 — picks a slightly different cycle duration & phase so flames don't sync */
+  seed?: number;
 }
 
 const MEDIA_QUERY = "(prefers-reduced-motion: reduce)";
@@ -23,25 +24,42 @@ function getServerSnapshot(): boolean {
   return false;
 }
 
-export default function CandleFlame({ style }: CandleFlameProps) {
+// Per-instance cycle durations (ms) and phase delays. Six distinct values so
+// the candelabra's six flames all drift relative to each other instead of
+// flickering in unison. Durations differ enough that even after several cycles
+// they don't realign — that's the trick that makes it look organic.
+const DURATIONS = [1100, 1020, 1180, 1240, 1080, 1140];
+const DELAYS = [0, 130, 290, 70, 410, 200];
+const FRAME_COUNT = 12;
+
+export default function CandleFlame({ style, seed = 0 }: CandleFlameProps) {
   const reduce = useSyncExternalStore(
     subscribe,
     getClientSnapshot,
     getServerSnapshot,
   );
 
+  const idx = ((seed % DURATIONS.length) + DURATIONS.length) % DURATIONS.length;
+  const cssVars = {
+    "--flame-duration": `${DURATIONS[idx]}ms`,
+    "--flame-delay": `${DELAYS[idx]}ms`,
+  } as React.CSSProperties;
+
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none absolute"
-      style={{ width: 40, height: 60, ...style }}
+      className="candle-flame pointer-events-none absolute"
+      data-reduce={reduce ? "1" : "0"}
+      style={{ width: 40, height: 60, ...cssVars, ...style }}
     >
-      <DotLottieReact
-        src="/lottie/flame.json"
-        loop={!reduce}
-        autoplay={!reduce}
-        style={{ width: "100%", height: "100%" }}
-      />
+      {Array.from({ length: FRAME_COUNT }, (_, i) => (
+        <img
+          key={i}
+          src={`/scene/flame-${i + 1}.png`}
+          alt=""
+          className={`flame-frame flame-frame-${i + 1}`}
+        />
+      ))}
     </div>
   );
 }

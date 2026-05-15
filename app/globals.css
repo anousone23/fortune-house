@@ -188,6 +188,42 @@ body {
   .ripple    { animation: none; opacity: 0; }
 }
 
+/* === CandleFlame (4-frame PNG cycle) === */
+.flame-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  will-change: opacity;
+}
+/* 12-frame cycle. All frames share one keyframe (visible for 1/12 of the cycle,
+   invisible the rest), staggered by animation-delay so exactly one frame is on
+   screen at any moment. --flame-duration & --flame-delay are set inline per
+   CandleFlame instance so the six candles drift relative to each other. */
+.flame-frame {
+  animation: flame-show var(--flame-duration, 1100ms) linear infinite;
+}
+.flame-frame-1  { animation-delay: calc(var(--flame-delay, 0ms) + 0  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-2  { animation-delay: calc(var(--flame-delay, 0ms) + 1  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-3  { animation-delay: calc(var(--flame-delay, 0ms) + 2  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-4  { animation-delay: calc(var(--flame-delay, 0ms) + 3  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-5  { animation-delay: calc(var(--flame-delay, 0ms) + 4  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-6  { animation-delay: calc(var(--flame-delay, 0ms) + 5  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-7  { animation-delay: calc(var(--flame-delay, 0ms) + 6  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-8  { animation-delay: calc(var(--flame-delay, 0ms) + 7  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-9  { animation-delay: calc(var(--flame-delay, 0ms) + 8  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-10 { animation-delay: calc(var(--flame-delay, 0ms) + 9  * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-11 { animation-delay: calc(var(--flame-delay, 0ms) + 10 * var(--flame-duration, 1100ms) / 12); }
+.flame-frame-12 { animation-delay: calc(var(--flame-delay, 0ms) + 11 * var(--flame-duration, 1100ms) / 12); }
+@keyframes flame-show {
+  0%, 8.33%     { opacity: 1; }
+  8.34%, 100%   { opacity: 0; }
+}
+.candle-flame[data-reduce="1"] .flame-frame { animation: none; }
+.candle-flame[data-reduce="1"] .flame-frame-1 { opacity: 1; }
+
 /* === Realistic Candelabras (Lottie-driven) === */
 .candelabra {
   position: absolute;
@@ -249,15 +285,20 @@ body {
   100% { transform: translate(5px, 100vh); opacity: 0; }
 }
 
+/* Owl — perched on the right cabinet shelf; mobile bg doesn't have a matching slot */
+@media (max-width: 640px) {
+  .owl-mount { display: none; }
+}
+
 /* RatEyes — two red glowing dots under the right cabinet, blinking independently */
 .rat-eye {
   position: absolute;
   width: 5px; height: 5px;
   border-radius: 50%;
-  background: rgba(255, 20, 20, 0.95);
+  background: rgba(170, 25, 25, 0.9);
   box-shadow:
-    0 0 8px 2px rgba(255, 30, 30, 0.75),
-    0 0 16px rgba(255, 0, 0, 0.45);
+    0 0 5px 1px rgba(170, 30, 30, 0.45),
+    0 0 10px rgba(140, 10, 10, 0.25);
   pointer-events: none;
   will-change: opacity;
 }
