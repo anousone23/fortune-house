@@ -7,6 +7,9 @@ import CrystalBall from "@/components/scene/CrystalBall";
 import Candelabra from "@/components/scene/Candelabra";
 import OrbRipples from "@/components/scene/OrbRipples";
 import DustMotes from "@/components/scene/DustMotes";
+import MagicSparks from "@/components/scene/MagicSparks";
+import FallingPetals from "@/components/scene/FallingPetals";
+import DriedLeaves from "@/components/scene/DriedLeaves";
 import OrnateTextarea from "@/components/ui/OrnateTextarea";
 import TopicChip from "@/components/ui/TopicChip";
 import OrnateButton from "@/components/ui/OrnateButton";
@@ -47,6 +50,9 @@ export default function QuestionScene() {
       <Vignette />
       <OrbRipples />
       <CrystalBall />
+      <MagicSparks />
+      <FallingPetals />
+      <DriedLeaves />
       <DustMotes />
 
       <div
