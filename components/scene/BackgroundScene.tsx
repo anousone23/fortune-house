@@ -11,7 +11,7 @@ export default function BackgroundScene() {
         srcSet="/scene/bg-chamber-mobile.png"
       />
       <Image
-        src="/scene/bg-chamber-desktop-without-candles.png"
+        src="/scene/bg-chamber-desktop-Photoroom.png"
         alt=""
         fill
         preload
