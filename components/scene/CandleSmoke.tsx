@@ -34,7 +34,7 @@ export default function CandleSmoke({ style }: CandleSmokeProps) {
     <div
       aria-hidden="true"
       className="pointer-events-none absolute"
-      style={{ width: 32, height: 90, ...style }}
+      style={{ width: 32, height: 90, opacity: 0.4, ...style }}
     >
       <DotLottieReact
         src="/lottie/smoke.json"

@@ -6,7 +6,10 @@ export default function BackgroundScene() {
       aria-hidden="true"
       style={{ position: "absolute", inset: 0, display: "block" }}
     >
-      <source media="(max-width: 640px)" srcSet="/scene/bg-chamber-mobile.png" />
+      <source
+        media="(max-width: 640px)"
+        srcSet="/scene/bg-chamber-mobile.png"
+      />
       <Image
         src="/scene/bg-chamber-desktop-without-candles.png"
         alt=""
