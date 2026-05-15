@@ -108,7 +108,7 @@ export default function FallingPetals() {
               alt=""
               width={28}
               height={36}
-              style={{ display: "block", height: "auto" }}
+              style={{ display: "block" }}
             />
           </motion.div>
         ))}

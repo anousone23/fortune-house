@@ -28,7 +28,7 @@ function getServerSnapshot(): boolean {
 // the candelabra's six flames all drift relative to each other instead of
 // flickering in unison. Durations differ enough that even after several cycles
 // they don't realign — that's the trick that makes it look organic.
-const DURATIONS = [1100, 1020, 1180, 1240, 1080, 1140];
+const DURATIONS = [1800, 1700, 1900, 2000, 1750, 1850];
 const DELAYS = [0, 130, 290, 70, 410, 200];
 const FRAME_COUNT = 12;
 

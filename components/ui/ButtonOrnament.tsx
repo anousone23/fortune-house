@@ -8,7 +8,7 @@ export default function ButtonOrnament() {
       width={60}
       height={48}
       aria-hidden="true"
-      style={{ display: "block", height: "auto" }}
+      style={{ display: "block" }}
     />
   );
 }
