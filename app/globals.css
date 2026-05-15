@@ -249,8 +249,28 @@ body {
   100% { transform: translate(5px, 100vh); opacity: 0; }
 }
 
-/* Reduced-motion override for the CSS-driven new effect. */
+/* RatEyes — two red glowing dots under the right cabinet, blinking independently */
+.rat-eye {
+  position: absolute;
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(255, 20, 20, 0.95);
+  box-shadow:
+    0 0 8px 2px rgba(255, 30, 30, 0.75),
+    0 0 16px rgba(255, 0, 0, 0.45);
+  pointer-events: none;
+  will-change: opacity;
+}
+@keyframes eye-blink {
+  0%, 88% { opacity: 1; }
+  94%     { opacity: 0; }
+  96%     { opacity: 0; }
+  100%    { opacity: 1; }
+}
+
+/* Reduced-motion override for the CSS-driven new effects. */
 /* (FallingPetals + DriedLeaves handle reduced-motion internally via useSyncExternalStore.) */
 @media (prefers-reduced-motion: reduce) {
   .magic-spark { animation: none; opacity: 0; }
+  .rat-eye     { animation: none; opacity: 0.7; }
 }

@@ -10,6 +10,7 @@ import DustMotes from "@/components/scene/DustMotes";
 import MagicSparks from "@/components/scene/MagicSparks";
 import FallingPetals from "@/components/scene/FallingPetals";
 import DriedLeaves from "@/components/scene/DriedLeaves";
+import RatEyes from "@/components/scene/RatEyes";
 import OrnateTextarea from "@/components/ui/OrnateTextarea";
 import TopicChip from "@/components/ui/TopicChip";
 import OrnateButton from "@/components/ui/OrnateButton";
@@ -54,6 +55,7 @@ export default function QuestionScene() {
       <FallingPetals />
       <DriedLeaves />
       <DustMotes />
+      <RatEyes />
 
       <div
         className="relative z-10 flex w-full max-w-[1100px] flex-col items-center px-6 pt-[8vh]"
