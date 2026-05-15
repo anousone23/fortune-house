@@ -1,10 +1,10 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 
 interface CandleFlameProps {
   style?: React.CSSProperties;
-  /** 0..5 — picks a slightly different cycle duration & phase so flames don't sync */
+  /** 0..5 — picks a slightly different playback rate so the six candles don't tick in lockstep */
   seed?: number;
 }
 
@@ -24,13 +24,9 @@ function getServerSnapshot(): boolean {
   return false;
 }
 
-// Per-instance cycle durations (ms) and phase delays. Six distinct values so
-// the candelabra's six flames all drift relative to each other instead of
-// flickering in unison. Durations differ enough that even after several cycles
-// they don't realign — that's the trick that makes it look organic.
-const DURATIONS = [1800, 1700, 1900, 2000, 1750, 1850];
-const DELAYS = [0, 130, 290, 70, 410, 200];
-const FRAME_COUNT = 12;
+// Small range around 1.0 so each candle plays at a slightly different speed
+// without distorting the natural flicker rhythm.
+const PLAYBACK_RATES = [0.88, 1.05, 0.95, 1.08, 0.92, 1.0];
 
 export default function CandleFlame({ style, seed = 0 }: CandleFlameProps) {
   const reduce = useSyncExternalStore(
@@ -38,28 +34,45 @@ export default function CandleFlame({ style, seed = 0 }: CandleFlameProps) {
     getClientSnapshot,
     getServerSnapshot,
   );
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const idx =
+    ((seed % PLAYBACK_RATES.length) + PLAYBACK_RATES.length) %
+    PLAYBACK_RATES.length;
 
-  const idx = ((seed % DURATIONS.length) + DURATIONS.length) % DURATIONS.length;
-  const cssVars = {
-    "--flame-duration": `${DURATIONS[idx]}ms`,
-    "--flame-delay": `${DELAYS[idx]}ms`,
-  } as React.CSSProperties;
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (reduce) {
+      v.pause();
+    } else {
+      v.playbackRate = PLAYBACK_RATES[idx];
+      v.play().catch(() => {});
+    }
+  }, [reduce, idx]);
 
   return (
     <div
       aria-hidden="true"
       className="candle-flame pointer-events-none absolute"
-      data-reduce={reduce ? "1" : "0"}
-      style={{ width: 40, height: 60, ...cssVars, ...style }}
+      style={{ width: 28, height: 56, ...style }}
     >
-      {Array.from({ length: FRAME_COUNT }, (_, i) => (
-        <img
-          key={i}
-          src={`/scene/flame-${i + 1}.png`}
-          alt=""
-          className={`flame-frame flame-frame-${i + 1}`}
-        />
-      ))}
+      <video
+        ref={videoRef}
+        src="/scene/flame-alpha.webm"
+        autoPlay
+        muted
+        loop
+        playsInline
+        style={{
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          display: "block",
+          pointerEvents: "none",
+          filter:
+            "drop-shadow(0 0 6px rgba(255, 160, 80, 0.55)) drop-shadow(0 0 18px rgba(255, 130, 40, 0.35))",
+        }}
+      />
     </div>
   );
 }
