@@ -1,6 +1,7 @@
 import Image from "next/image";
 import CandleFlame from "./CandleFlame";
 import CandleSmoke from "./CandleSmoke";
+import WaxDrips from "./WaxDrips";
 
 interface CandelabraProps {
   position: "left" | "right";
@@ -16,7 +17,7 @@ const WICKS = [
 
 // Smoke emerges from above the flame tip, not at the wick base.
 // Offset is applied as: smoke top = wick yPct + SMOKE_Y_OFFSET (negative → moves up).
-const SMOKE_Y_OFFSET = -4;
+const SMOKE_Y_OFFSET = -6;
 
 export default function Candelabra({ position }: CandelabraProps) {
   return (
@@ -53,6 +54,7 @@ export default function Candelabra({ position }: CandelabraProps) {
           }}
         />
       ))}
+      <WaxDrips wicks={WICKS} />
     </div>
   );
 }
