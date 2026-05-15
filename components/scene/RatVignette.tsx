@@ -29,21 +29,21 @@ export default function RatVignette() {
     getClientSnapshot,
     getServerSnapshot,
   );
-  const [step, setStep] = useState<Step>("idle");
+  const [internalStep, setInternalStep] = useState<Step>("idle");
+  // When reduced motion is on, the step is always "done" — derived, not setState.
+  // Avoids a synchronous setState-in-effect that React 19's lint rule flags.
+  const step: Step = reduce ? "done" : internalStep;
 
   useEffect(() => {
-    if (reduce) {
-      setStep("done");
-      return;
-    }
-    const t = setTimeout(() => setStep("falling"), TRIGGER_DELAY_MS);
+    if (reduce) return;
+    const t = setTimeout(() => setInternalStep("falling"), TRIGGER_DELAY_MS);
     return () => clearTimeout(t);
   }, [reduce]);
 
   return (
     <>
-      <FallingBottle step={step} onLanded={() => setStep("running")} />
-      <RunningRat step={step} onExited={() => setStep("done")} />
+      <FallingBottle step={step} onLanded={() => setInternalStep("running")} />
+      <RunningRat step={step} onExited={() => setInternalStep("done")} />
     </>
   );
 }
