@@ -1,7 +1,6 @@
 import Image from "next/image";
 import CandleFlame from "./CandleFlame";
 import CandleSmoke from "./CandleSmoke";
-import WaxDrips from "./WaxDrips";
 
 interface CandelabraProps {
   position: "left" | "right";
@@ -54,7 +53,6 @@ export default function Candelabra({ position }: CandelabraProps) {
           }}
         />
       ))}
-      <WaxDrips wicks={WICKS} />
     </div>
   );
 }
