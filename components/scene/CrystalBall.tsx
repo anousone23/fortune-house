@@ -7,7 +7,7 @@ export default function CrystalBall() {
       style={{
         left: "var(--orb-x)",
         top: "var(--orb-y)",
-        transform: "translate(-50%, -55%)",
+        transform: "translate(-50%, -48%)",
         aspectRatio: "1 / 1",
       }}
     >
