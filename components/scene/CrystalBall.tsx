@@ -1,4 +1,5 @@
 import Image from "next/image";
+import OrbGeometry from "./OrbGeometry";
 
 export default function CrystalBall() {
   return (
@@ -23,6 +24,7 @@ export default function CrystalBall() {
           style={{ width: "100%", height: "auto", position: "relative" }}
         />
       </picture>
+      <OrbGeometry />
     </div>
   );
 }
