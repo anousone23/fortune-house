@@ -141,13 +141,14 @@ body {
 .ornate-textarea-frame::after {
   content: "";
   position: absolute;
-  inset: -1px;
-  border-radius: var(--radius-sm);
-  padding: 1px;
+  inset: -4px;
+  border-radius: calc(var(--radius-sm) + 4px);
+  padding: 4px;
   background: radial-gradient(
-    circle 90px at var(--mouse-x) var(--mouse-y),
+    circle 160px at var(--mouse-x) var(--mouse-y),
     var(--gold-primary) 0%,
-    rgba(230, 212, 163, 0.35) 35%,
+    rgba(230, 212, 163, 0.7) 25%,
+    rgba(168, 136, 74, 0.3) 50%,
     transparent 75%
   );
   -webkit-mask:
@@ -160,8 +161,10 @@ body {
   mask-composite: exclude;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.4s ease-out;
+  filter: blur(1.5px);
+  transition: opacity 0.35s ease-out;
 }
+.ornate-textarea-frame:hover::after,
 .ornate-textarea-frame:focus-within::after {
   opacity: 1;
 }

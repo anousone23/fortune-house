@@ -63,6 +63,7 @@ export default function OrnateTextarea({ value, onChange }: OrnateTextareaProps)
       ref={frameRef}
       className="ornate-textarea-frame relative w-full"
       onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseMove}
       style={{
         background: "rgba(26, 5, 8, 0.72)",
         border: "1px solid var(--gold-stroke)",
