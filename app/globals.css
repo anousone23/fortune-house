@@ -125,6 +125,28 @@ body {
   .ornate-button { transition: none; }
 }
 
+/* Scene vignette overlay — soft darkening at the top to focus attention downward. */
+.scene-vignette {
+  background: radial-gradient(ellipse 60% 40% at 50% 12%, var(--scrim) 0%, transparent 70%);
+}
+
+/* CandleFlame — wrapper dimensions; the video element gets the warm bloom filter
+   that sells the flame as a real light source. */
+.candle-flame {
+  width: 28px;
+  height: 56px;
+}
+.candle-flame video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 0 6px rgba(255, 160, 80, 0.55))
+    drop-shadow(0 0 18px rgba(255, 130, 40, 0.35));
+}
+
 /* === Atmospheric ambient effects === */
 
 /* DustMotes */
@@ -286,9 +308,82 @@ body {
   100%    { opacity: 1; }
 }
 
+/* Falling leaves — CSS-driven, parameterized per instance via custom properties
+   set inline by the React component. Times mirror the prior framer-motion config:
+   drift1 hits early (10%), drift2 holds through 90%, drift3 at the end. */
+@keyframes leaf-fall {
+  0% {
+    transform: translateX(var(--leaf-start-x)) translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    transform: translateX(calc(var(--leaf-start-x) + var(--leaf-d1))) translateY(10vh) rotate(var(--leaf-r1));
+    opacity: 0.9;
+  }
+  90% {
+    transform: translateX(calc(var(--leaf-start-x) + var(--leaf-d2))) translateY(95vh) rotate(var(--leaf-r2));
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(calc(var(--leaf-start-x) + var(--leaf-d3))) translateY(110vh) rotate(var(--leaf-r3));
+    opacity: 0;
+  }
+}
+.leaf-falling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: leaf-fall var(--leaf-duration, 18s) ease-in-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes petal-fall {
+  0% {
+    transform: translateX(var(--petal-start-x)) translateY(-100px) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    transform: translateX(calc(var(--petal-start-x) + var(--petal-d1))) translateY(10vh) rotate(calc(var(--petal-rot) * 0.1));
+    opacity: 0.9;
+  }
+  90% {
+    transform: translateX(calc(var(--petal-start-x) + var(--petal-d2))) translateY(95vh) rotate(calc(var(--petal-rot) * 0.9));
+    opacity: 0.9;
+  }
+  100% {
+    transform: translateX(calc(var(--petal-start-x) + var(--petal-d3))) translateY(110vh) rotate(var(--petal-rot));
+    opacity: 0;
+  }
+}
+.petal-falling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: petal-fall var(--petal-duration, 9s) ease-in forwards;
+  will-change: transform, opacity;
+}
+
+/* Owl head wobble: 8-stop irregular rotation. The keyframe % values mirror
+   the prior `times` array from framer-motion. */
+@keyframes owl-head-wobble {
+  0%   { transform: rotate(0deg); }
+  12%  { transform: rotate(-15deg); }
+  25%  { transform: rotate(0deg); }
+  40%  { transform: rotate(18deg); }
+  55%  { transform: rotate(0deg); }
+  70%  { transform: rotate(-8deg); }
+  85%  { transform: rotate(4deg); }
+  100% { transform: rotate(0deg); }
+}
+.owl-head {
+  animation: owl-head-wobble 18s ease-in-out infinite;
+  transform-origin: 50% 80%;
+  will-change: transform;
+}
+
 /* Reduced-motion override for the CSS-driven new effects. */
-/* (FallingPetals + DriedLeaves handle reduced-motion internally via useSyncExternalStore.) */
 @media (prefers-reduced-motion: reduce) {
   .magic-spark { animation: none; opacity: 0; }
   .rat-eye     { animation: none; opacity: 0.7; }
+  .owl-head    { animation: none; }
 }

@@ -31,7 +31,7 @@ export default function CrystalBall() {
           width={760}
           height={760}
           sizes="(max-width: 640px) 40vw, 24vw"
-          preload
+          priority
           style={{ width: "100%", height: "auto", position: "relative" }}
         />
       </picture>

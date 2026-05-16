@@ -22,7 +22,6 @@ export default function Candelabra({ position }: CandelabraProps) {
         src="/scene/candelabra.png"
         alt=""
         fill
-        preload
         sizes="(max-width: 640px) 0px, 18vw"
         style={{ objectFit: "contain" }}
       />

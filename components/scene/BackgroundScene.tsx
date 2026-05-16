@@ -14,7 +14,7 @@ export default function BackgroundScene() {
         src="/scene/bg-chamber-desktop-without-candles.png"
         alt=""
         fill
-        preload
+        priority
         sizes="100vw"
         style={{ objectFit: "cover", objectPosition: "center" }}
       />
