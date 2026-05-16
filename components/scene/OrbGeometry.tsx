@@ -1,5 +1,3 @@
-"use client";
-
 import Image from "next/image";
 
 export default function OrbGeometry() {
@@ -20,7 +18,6 @@ export default function OrbGeometry() {
         fill
         sizes="(max-width: 640px) 30vw, 18vw"
         style={{ objectFit: "contain" }}
-        priority={false}
       />
     </div>
   );

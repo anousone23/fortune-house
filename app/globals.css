@@ -502,13 +502,10 @@ body {
   .owl-head {
     animation: none;
   }
+  .orb-geometry { animation: none !important; }
 }
 
 @keyframes orb-rotate {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orb-geometry { animation: none !important; }
 }
