@@ -8,11 +8,13 @@ import OrnateButton from "@/components/ui/OrnateButton";
 import ChipWisp from "@/components/scene/ChipWisp";
 import { SUGGESTIONS } from "./suggestions";
 import { useSceneState } from "./SceneStateContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function QuestionForm() {
   const { state, setSelectedChip, setHasText } = useSceneState();
   const [question, setQuestion] = useState("");
 
+  const reduce = useReducedMotion();
   const chipRefs = useRef<Map<string, HTMLButtonElement | null>>(new Map());
   const [activeWisp, setActiveWisp] = useState<{
     id: string;
@@ -22,6 +24,10 @@ export default function QuestionForm() {
   } | null>(null);
 
   useEffect(() => {
+    if (reduce) {
+      setActiveWisp(null);
+      return;
+    }
     if (!state.hoveredChipId) {
       setActiveWisp(null);
       return;
@@ -51,7 +57,7 @@ export default function QuestionForm() {
       },
       themeColor: suggestion?.themeColor ?? "#B26BFF",
     });
-  }, [state.hoveredChipId]);
+  }, [state.hoveredChipId, reduce]);
 
   const handleChip = (id: string, text: string) => {
     setSelectedChip(id);

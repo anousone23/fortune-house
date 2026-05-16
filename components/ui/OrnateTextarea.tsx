@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import FrameCorners from "./FrameCorners";
 import KeystrokeSparks, { type Spark } from "@/components/scene/KeystrokeSparks";
 import { useSceneState } from "@/app/SceneStateContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface OrnateTextareaProps {
   value: string;
@@ -14,10 +15,12 @@ let nextSparkId = 1;
 
 export default function OrnateTextarea({ value, onChange }: OrnateTextareaProps) {
   const { setFocused } = useSceneState();
+  const reduce = useReducedMotion();
   const [sparks, setSparks] = useState<Spark[]>([]);
   const lastSpawnRef = useRef(0);
 
   const spawnSparks = () => {
+    if (reduce) return;
     const now = Date.now();
     if (now - lastSpawnRef.current < 60) return; // debounce 60ms
     lastSpawnRef.current = now;

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import ChipCardArt from "./ChipCardArt";
 import { useSceneState } from "@/app/SceneStateContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface TopicChipProps {
   id: string;
@@ -15,6 +16,7 @@ interface TopicChipProps {
 
 export default function TopicChip({ id, label, selected, onClick, fanAngle = 0, chipRef }: TopicChipProps) {
   const { setHoveredChip } = useSceneState();
+  const reduce = useReducedMotion();
 
   return (
     <button
@@ -46,9 +48,9 @@ export default function TopicChip({ id, label, selected, onClick, fanAngle = 0, 
         style={{ ["--chip-fan-angle" as string]: `${fanAngle}deg` }}
         initial={false}
         animate={selected ? { y: -3, rotate: 0 } : { y: 0, rotate: fanAngle }}
-        whileHover={{ y: -6, rotate: 0 }}
-        whileTap={{ rotate: -2 }}
-        transition={{ type: "spring", stiffness: 220, damping: 24 }}
+        whileHover={reduce ? undefined : { y: -6, rotate: 0 }}
+        whileTap={reduce ? undefined : { rotate: -2 }}
+        transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 220, damping: 24 }}
       >
         <ChipCardArt sigilId={id} />
       </motion.div>
