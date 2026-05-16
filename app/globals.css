@@ -154,13 +154,26 @@ body {
   }
 }
 
-/* Scene vignette overlay — soft darkening at the top to focus attention downward. */
+/* Scene vignette overlay — centered radial gradient that tightens on focus. */
+@property --vignette-inner {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 60%;
+}
+
 .scene-vignette {
   background: radial-gradient(
-    ellipse 60% 40% at 50% 12%,
-    var(--scrim) 0%,
-    transparent 70%
+    ellipse at center,
+    transparent 0%,
+    transparent var(--vignette-inner, 60%),
+    var(--scrim) 100%
   );
+  animation: vignette-breath 6s ease-in-out infinite;
+}
+
+@keyframes vignette-breath {
+  0%, 100% { --vignette-inner: 60%; }
+  50%      { --vignette-inner: 62%; }
 }
 
 /* CandleFlame — wrapper dimensions; the video element gets the warm bloom filter
@@ -503,6 +516,7 @@ body {
     animation: none;
   }
   .orb-geometry { animation: none !important; }
+  .scene-vignette { animation: none; }
 }
 
 @keyframes orb-rotate {
