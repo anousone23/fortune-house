@@ -529,6 +529,7 @@ body {
   }
   .orb-geometry { animation: none !important; }
   .scene-vignette { animation: none; }
+  .candle-smoke { animation: none; opacity: 0; }
 }
 
 @keyframes orb-rotate {
@@ -556,4 +557,24 @@ body {
   transform-origin: bottom center;
   transform: translateX(-50%) rotate(var(--chip-fan-angle, 0deg));
   z-index: 0;
+}
+
+.candle-smoke {
+  position: absolute;
+  width: 24px;
+  height: 80px;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  background: radial-gradient(ellipse at bottom, rgba(245, 233, 210, 0.5) 0%, transparent 70%);
+  filter: blur(6px);
+  mix-blend-mode: screen;
+  opacity: 0;
+  animation: candle-smoke-rise 5s ease-in-out infinite;
+  animation-delay: var(--smoke-delay, 0s);
+}
+
+@keyframes candle-smoke-rise {
+  0%   { transform: translate(-50%, -100%) translateY(0) rotate(0deg);   opacity: 0; }
+  20%  { opacity: 0.4; }
+  100% { transform: translate(-50%, -100%) translateY(-40px) rotate(6deg); opacity: 0; }
 }

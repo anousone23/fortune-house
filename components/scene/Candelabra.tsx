@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import CandleFlame from "./CandleFlame";
+import CandleSmoke from "./CandleSmoke";
 import { useSceneState } from "@/app/SceneStateContext";
 
 interface CandelabraProps {
@@ -42,6 +43,16 @@ export default function Candelabra({ position }: CandelabraProps) {
             left: `${wick.xPct}%`,
             top: `${wick.yPct}%`,
             transform: "translate(-50%, -100%)",
+          }}
+        />
+      ))}
+      {WICKS.map((wick, i) => (
+        <CandleSmoke
+          key={`smoke-${i}`}
+          seed={position === "left" ? i : i + 3}
+          style={{
+            left: `${wick.xPct}%`,
+            top: `${wick.yPct}%`,
           }}
         />
       ))}
