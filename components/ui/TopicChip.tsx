@@ -1,17 +1,30 @@
+"use client";
+
+import { motion } from "framer-motion";
+import ChipCardArt from "./ChipCardArt";
+import { useSceneState } from "@/app/SceneStateContext";
+
 interface TopicChipProps {
-  id?: string;
+  id: string;
   label: string;
   selected: boolean;
   onClick: () => void;
+  fanAngle?: number;
 }
 
-export default function TopicChip({ id: _id, label, selected, onClick }: TopicChipProps) {
+export default function TopicChip({ id, label, selected, onClick, fanAngle = 0 }: TopicChipProps) {
+  const { setHoveredChip } = useSceneState();
+
   return (
     <button
       type="button"
       aria-pressed={selected}
       onClick={onClick}
-      className="inline-flex items-center justify-center rounded-full transition-colors duration-200 ease-out"
+      onMouseEnter={() => setHoveredChip(id)}
+      onMouseLeave={() => setHoveredChip(null)}
+      onFocus={() => setHoveredChip(id)}
+      onBlur={() => setHoveredChip(null)}
+      className="topic-chip inline-flex items-center justify-center rounded-full"
       style={{
         minHeight: 44,
         padding: "8px 18px",
@@ -22,8 +35,21 @@ export default function TopicChip({ id: _id, label, selected, onClick }: TopicCh
         fontFamily: "inherit",
         fontSize: "0.95rem",
         whiteSpace: "nowrap",
+        position: "relative",
+        zIndex: 1,
       }}
     >
+      <motion.div
+        className="topic-chip-card"
+        style={{ ["--chip-fan-angle" as string]: `${fanAngle}deg` }}
+        initial={false}
+        animate={selected ? { y: -3, rotate: 0 } : { y: 0, rotate: fanAngle }}
+        whileHover={{ y: -6, rotate: 0 }}
+        whileTap={{ rotate: -2 }}
+        transition={{ type: "spring", stiffness: 220, damping: 24 }}
+      >
+        <ChipCardArt sigilId={id} />
+      </motion.div>
       {label}
     </button>
   );

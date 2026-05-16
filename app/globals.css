@@ -535,3 +535,25 @@ body {
   from { transform: rotate(0deg); }
   to   { transform: rotate(360deg); }
 }
+
+.chip-row {
+  position: relative;
+  justify-content: center;
+  padding-top: 80px;
+}
+
+.topic-chip {
+  position: relative;
+}
+
+.topic-chip-card {
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  margin-bottom: 4px;
+  width: clamp(48px, 7vw, 72px);
+  height: clamp(72px, 10.5vw, 108px);
+  transform-origin: bottom center;
+  transform: translateX(-50%) rotate(var(--chip-fan-angle, 0deg));
+  z-index: 0;
+}
