@@ -179,10 +179,18 @@ body {
   animation: vignette-breath 6s ease-in-out infinite;
 }
 
-/* Full-scene dim layer — fades in on textarea focus so the periphery
-   (orb, candles, particles) darkens while the form content (z-10) stays lit. */
+/* Side-dim layer — fades in on textarea focus to darken ONLY the left and
+   right edges of the scene (side cabinets, candelabras), leaving the center
+   (orb, textarea, title) brightly lit. The gradient stops below give a long
+   soft transition from dark edges into transparent middle. */
 .scene-dim {
-  background: #000;
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0) 32%,
+    rgba(0, 0, 0, 0) 68%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
   z-index: 9;
 }
 
