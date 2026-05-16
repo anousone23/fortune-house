@@ -1,4 +1,7 @@
+"use client";
+
 import FrameCorners from "./FrameCorners";
+import { useSceneState } from "@/app/SceneStateContext";
 
 interface OrnateTextareaProps {
   value: string;
@@ -6,6 +9,8 @@ interface OrnateTextareaProps {
 }
 
 export default function OrnateTextarea({ value, onChange }: OrnateTextareaProps) {
+  const { setFocused } = useSceneState();
+
   return (
     <div
       className="ornate-textarea-frame relative w-full"
@@ -18,13 +23,13 @@ export default function OrnateTextarea({ value, onChange }: OrnateTextareaProps)
       }}
     >
       <FrameCorners />
-      <label htmlFor="question-input" className="sr-only">
-        คำถามของคุณ
-      </label>
+      <label htmlFor="question-input" className="sr-only">คำถามของคุณ</label>
       <textarea
         id="question-input"
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => setFocused(false)}
         placeholder="พิมพ์คำถามของคุณ…(ไม่บังคับ)"
         rows={3}
         className="w-full resize-none bg-transparent outline-none placeholder:opacity-60"
