@@ -4,6 +4,7 @@ import OrbGeometry from "./OrbGeometry";
 export default function CrystalBall() {
   return (
     <div
+      aria-hidden="true"
       className="crystal-ball pointer-events-none absolute"
       style={{
         left: "var(--orb-x)",
