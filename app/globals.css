@@ -187,8 +187,8 @@ body {
   background: linear-gradient(
     to right,
     rgba(0, 0, 0, 0.9) 0%,
-    rgba(0, 0, 0, 0) 32%,
-    rgba(0, 0, 0, 0) 68%,
+    rgba(0, 0, 0, 0) 38%,
+    rgba(0, 0, 0, 0) 62%,
     rgba(0, 0, 0, 0.9) 100%
   );
   z-index: 9;
