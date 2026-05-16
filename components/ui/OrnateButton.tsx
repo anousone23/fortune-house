@@ -26,7 +26,7 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
         className="pointer-events-none absolute inset-0"
         style={{
           borderRadius: 999,
-          boxShadow: "0 0 24px 4px var(--accent-mystic)",
+          boxShadow: "0 0 24px 4px var(--gold-primary)",
         }}
         initial={false}
         animate={{ opacity: showGlow ? 0.7 : 0 }}
