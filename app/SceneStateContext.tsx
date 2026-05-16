@@ -6,7 +6,6 @@ import {
   useContext,
   useMemo,
   useReducer,
-  useRef,
   type ReactNode,
 } from "react";
 import { useMotionValue, type MotionValue } from "framer-motion";
@@ -62,11 +61,6 @@ export function SceneStateProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const energy = useMotionValue(0);
 
-  // keep energy in sync with state without re-renders for consumers
-  const focusedRef = useRef(state.focused);
-  const hoveredRef = useRef(state.hoveredChipId);
-  focusedRef.current = state.focused;
-  hoveredRef.current = state.hoveredChipId;
   // Re-evaluate energy whenever focused/hovered change
   // (called inside render — fine because useMotionValue.set is a noop if unchanged)
   const target = state.focused ? 1 : state.hoveredChipId ? 0.7 : 0;
@@ -81,7 +75,7 @@ export function SceneStateProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo<SceneContextValue>(
     () => ({ state, ready, energy, setFocused, setHoveredChip, setSelectedChip, setHasText }),
-    [state, ready, energy, setFocused, setHoveredChip, setSelectedChip, setHasText],
+    [state, ready, setFocused, setHoveredChip, setSelectedChip, setHasText],
   );
 
   return <SceneStateContext.Provider value={value}>{children}</SceneStateContext.Provider>;
