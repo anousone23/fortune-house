@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from "react";
 import { useMotionValue, type MotionValue } from "framer-motion";
+import { SUGGESTIONS } from "./suggestions";
 
 export type SceneState = {
   focused: boolean;
@@ -49,6 +50,7 @@ type SceneContextValue = {
   state: SceneState;
   ready: boolean;
   energy: MotionValue<number>;
+  tintColor: string | null;
   setFocused: (v: boolean) => void;
   setHoveredChip: (id: string | null) => void;
   setSelectedChip: (id: string | null) => void;
@@ -68,14 +70,21 @@ export function SceneStateProvider({ children }: { children: ReactNode }) {
 
   const ready = state.hasText && state.selectedChipId !== null;
 
+  const tintColor = (() => {
+    // hovered overrides selected for a "previewing" feel
+    const id = state.hoveredChipId ?? state.selectedChipId;
+    if (!id) return null;
+    return SUGGESTIONS.find((s) => s.id === id)?.themeColor ?? null;
+  })();
+
   const setFocused = useCallback((v: boolean) => dispatch({ type: "SET_FOCUSED", value: v }), []);
   const setHoveredChip = useCallback((id: string | null) => dispatch({ type: "SET_HOVERED_CHIP", id }), []);
   const setSelectedChip = useCallback((id: string | null) => dispatch({ type: "SET_SELECTED_CHIP", id }), []);
   const setHasText = useCallback((v: boolean) => dispatch({ type: "SET_HAS_TEXT", value: v }), []);
 
   const value = useMemo<SceneContextValue>(
-    () => ({ state, ready, energy, setFocused, setHoveredChip, setSelectedChip, setHasText }),
-    [state, ready, setFocused, setHoveredChip, setSelectedChip, setHasText],
+    () => ({ state, ready, energy, tintColor, setFocused, setHoveredChip, setSelectedChip, setHasText }),
+    [state, ready, tintColor, setFocused, setHoveredChip, setSelectedChip, setHasText],
   );
 
   return <SceneStateContext.Provider value={value}>{children}</SceneStateContext.Provider>;
