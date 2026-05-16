@@ -179,6 +179,13 @@ body {
   animation: vignette-breath 6s ease-in-out infinite;
 }
 
+/* Full-scene dim layer — fades in on textarea focus so the periphery
+   (orb, candles, particles) darkens while the form content (z-10) stays lit. */
+.scene-dim {
+  background: #000;
+  z-index: 9;
+}
+
 .scene-vignette::before {
   content: "";
   position: absolute;
