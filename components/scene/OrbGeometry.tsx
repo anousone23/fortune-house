@@ -3,10 +3,12 @@
 import Image from "next/image";
 import { motion, useTransform } from "framer-motion";
 import { useSceneEnergy, useSceneState } from "@/app/SceneStateContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function OrbGeometry() {
   const energy = useSceneEnergy();
   const { ready, tintColor } = useSceneState();
+  const reduce = useReducedMotion();
 
   // energy 0 → 0.3, 0.4 → 0.55, 0.7 → 0.75, 1.0 → 0.85
   const opacityFromEnergy = useTransform(energy, [0, 0.4, 0.7, 1], [0.3, 0.55, 0.75, 0.85]);
@@ -22,7 +24,7 @@ export default function OrbGeometry() {
           opacity: ready ? 0.95 : opacityFromEnergy,
           animation: "orb-rotate 60s linear infinite",
         }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        transition={reduce ? { duration: 0 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         <Image
           src="/scene/orb-geometry.svg"
@@ -43,7 +45,7 @@ export default function OrbGeometry() {
             : "transparent",
         }}
         animate={{ opacity: tintColor ? 0.25 : 0 }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+        transition={reduce ? { duration: 0 } : { duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
       />
       <motion.div
         aria-hidden="true"
@@ -55,7 +57,7 @@ export default function OrbGeometry() {
           mixBlendMode: "screen",
         }}
         animate={{ opacity: ready ? 1 : 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        transition={reduce ? { duration: 0 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       />
     </>
   );

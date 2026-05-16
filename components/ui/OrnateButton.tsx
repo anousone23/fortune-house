@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import ButtonOrnament from "./ButtonOrnament";
 import { useSceneState } from "@/app/SceneStateContext";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface OrnateButtonProps {
   variant: "primary" | "ghost";
@@ -14,6 +15,7 @@ interface OrnateButtonProps {
 
 export default function OrnateButton({ variant, onClick, loading = false, children }: OrnateButtonProps) {
   const { ready } = useSceneState();
+  const reduce = useReducedMotion();
   const isPrimary = variant === "primary";
   const showGlow = isPrimary && ready;
 
@@ -28,7 +30,7 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
         }}
         initial={false}
         animate={{ opacity: showGlow ? 0.7 : 0 }}
-        transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        transition={reduce ? { duration: 0 } : { duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       />
       <button
         type="button"

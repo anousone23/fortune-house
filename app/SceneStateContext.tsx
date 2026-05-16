@@ -4,11 +4,13 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useReducer,
   type ReactNode,
 } from "react";
-import { useMotionValue, type MotionValue } from "framer-motion";
+import { animate, useMotionValue, type MotionValue } from "framer-motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SUGGESTIONS } from "./suggestions";
 
 export type SceneState = {
@@ -62,11 +64,16 @@ const SceneStateContext = createContext<SceneContextValue | null>(null);
 export function SceneStateProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   const energy = useMotionValue(0);
-
-  // Re-evaluate energy whenever focused/hovered change
-  // (called inside render — fine because useMotionValue.set is a noop if unchanged)
+  const reduce = useReducedMotion();
   const target = state.focused ? 1 : state.hoveredChipId ? 0.7 : 0;
-  if (energy.get() !== target) energy.set(target);
+
+  useEffect(() => {
+    const controls = animate(energy, target, {
+      duration: reduce ? 0 : 0.4,
+      ease: [0.16, 1, 0.3, 1],
+    });
+    return () => controls.stop();
+  }, [energy, target, reduce]);
 
   const ready = state.hasText && state.selectedChipId !== null;
 
