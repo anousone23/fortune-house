@@ -1,11 +1,6 @@
-"use client";
-
 import Image from "next/image";
-import { motion } from "framer-motion";
 import CandleFlame from "./CandleFlame";
 import CandleSmoke from "./CandleSmoke";
-import { useSceneState } from "@/app/SceneStateContext";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 interface CandelabraProps {
   position: "left" | "right";
@@ -18,17 +13,11 @@ const WICKS = [
 ] as const;
 
 export default function Candelabra({ position }: CandelabraProps) {
-  const { state } = useSceneState();
-  const dim = state.focused;
-  const reduce = useReducedMotion();
-
   return (
-    <motion.div
+    <div
       aria-hidden="true"
       className="candelabra pointer-events-none"
       data-side={position}
-      animate={{ opacity: dim ? 0.7 : 1, filter: dim ? "brightness(0.8)" : "brightness(1)" }}
-      transition={reduce ? { duration: 0 } : { duration: dim ? 0.4 : 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
       <Image
         src="/scene/candelabra.png"
@@ -58,6 +47,6 @@ export default function Candelabra({ position }: CandelabraProps) {
           }}
         />
       ))}
-    </motion.div>
+    </div>
   );
 }
