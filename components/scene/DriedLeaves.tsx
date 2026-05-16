@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useSceneState } from "@/app/SceneStateContext";
 
 interface Leaf {
   id: number;
@@ -13,8 +14,9 @@ interface Leaf {
 }
 
 let nextLeafId = 1;
-function makeLeaf(viewportWidth: number): Leaf {
+function makeLeaf(viewportWidth: number, slow: boolean): Leaf {
   const sign = Math.random() < 0.5 ? -1 : 1;
+  const baseDuration = 15 + Math.random() * 6;
   return {
     id: nextLeafId++,
     startX: Math.random() * viewportWidth,
@@ -28,19 +30,23 @@ function makeLeaf(viewportWidth: number): Leaf {
       -sign * (60 + Math.random() * 120),
       sign * (60 + Math.random() * 120),
     ],
-    duration: 15 + Math.random() * 6,
+    duration: slow ? baseDuration * 2 : baseDuration,
   };
 }
 
 export default function DriedLeaves() {
   const reduce = useReducedMotion();
   const [leaves, setLeaves] = useState<Leaf[]>([]);
+  const { state } = useSceneState();
+  const slow = state.focused;
+  const slowRef = useRef(slow);
+  slowRef.current = slow;
 
   useEffect(() => {
     if (reduce) return;
     let timerId: ReturnType<typeof setTimeout> | undefined;
     const spawn = () => {
-      setLeaves((prev) => [...prev, makeLeaf(window.innerWidth)]);
+      setLeaves((prev) => [...prev, makeLeaf(window.innerWidth, slowRef.current)]);
       timerId = setTimeout(spawn, 10000 + Math.random() * 8000);
     };
     timerId = setTimeout(spawn, 2000);

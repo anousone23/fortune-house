@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useSceneState } from "@/app/SceneStateContext";
 
 interface Petal {
   id: number;
@@ -13,7 +14,8 @@ interface Petal {
 }
 
 let nextPetalId = 1;
-function makePetal(viewportWidth: number): Petal {
+function makePetal(viewportWidth: number, slow: boolean): Petal {
+  const baseDuration = 7 + Math.random() * 4;
   return {
     id: nextPetalId++,
     startX: Math.random() * viewportWidth,
@@ -23,19 +25,23 @@ function makePetal(viewportWidth: number): Petal {
       (Math.random() - 0.5) * 80,
     ],
     rotation: (Math.random() * 2 - 1) * 540,
-    duration: 7 + Math.random() * 4,
+    duration: slow ? baseDuration * 2 : baseDuration,
   };
 }
 
 export default function FallingPetals() {
   const reduce = useReducedMotion();
   const [petals, setPetals] = useState<Petal[]>([]);
+  const { state } = useSceneState();
+  const slow = state.focused;
+  const slowRef = useRef(slow);
+  slowRef.current = slow;
 
   useEffect(() => {
     if (reduce) return;
     let timerId: ReturnType<typeof setTimeout> | undefined;
     const spawn = () => {
-      setPetals((prev) => [...prev, makePetal(window.innerWidth)]);
+      setPetals((prev) => [...prev, makePetal(window.innerWidth, slowRef.current)]);
       timerId = setTimeout(spawn, 6000 + Math.random() * 4000);
     };
     timerId = setTimeout(spawn, 1000);
