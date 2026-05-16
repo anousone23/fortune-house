@@ -5,21 +5,24 @@ import OrnateTextarea from "@/components/ui/OrnateTextarea";
 import TopicChip from "@/components/ui/TopicChip";
 import OrnateButton from "@/components/ui/OrnateButton";
 import { SUGGESTIONS } from "./suggestions";
+import { useSceneState } from "./SceneStateContext";
 
 export default function QuestionForm() {
+  const { state, setSelectedChip, setHasText } = useSceneState();
   const [question, setQuestion] = useState("");
-  const [selectedChipId, setSelectedChipId] = useState<string | null>(null);
 
   const handleChip = (id: string, text: string) => {
-    setSelectedChipId(id);
+    setSelectedChip(id);
     setQuestion(text);
+    setHasText(text.length > 0);
   };
 
   const handleChange = (next: string) => {
     setQuestion(next);
-    if (selectedChipId !== null) {
-      const selected = SUGGESTIONS.find((s) => s.id === selectedChipId);
-      if (!selected || next !== selected.text) setSelectedChipId(null);
+    setHasText(next.length > 0);
+    if (state.selectedChipId !== null) {
+      const selected = SUGGESTIONS.find((s) => s.id === state.selectedChipId);
+      if (!selected || next !== selected.text) setSelectedChip(null);
     }
   };
 
@@ -28,13 +31,7 @@ export default function QuestionForm() {
 
   return (
     <>
-      <div
-        className="w-full"
-        style={{
-          maxWidth: 720,
-          animation: "fade-up 600ms ease-out 240ms both",
-        }}
-      >
+      <div className="w-full" style={{ maxWidth: 720, animation: "fade-up 600ms ease-out 240ms both" }}>
         <OrnateTextarea value={question} onChange={handleChange} />
       </div>
 
@@ -47,8 +44,9 @@ export default function QuestionForm() {
         {SUGGESTIONS.map((s) => (
           <TopicChip
             key={s.id}
+            id={s.id}
             label={s.label}
-            selected={selectedChipId === s.id}
+            selected={state.selectedChipId === s.id}
             onClick={() => handleChip(s.id, s.text)}
           />
         ))}
@@ -58,12 +56,8 @@ export default function QuestionForm() {
         className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4"
         style={{ animation: "fade-up 600ms ease-out 400ms both" }}
       >
-        <OrnateButton variant="primary" onClick={handleStart}>
-          เริ่มเลือกไพ่
-        </OrnateButton>
-        <OrnateButton variant="ghost" onClick={handleSkip}>
-          ข้าม
-        </OrnateButton>
+        <OrnateButton variant="primary" onClick={handleStart}>เริ่มเลือกไพ่</OrnateButton>
+        <OrnateButton variant="ghost" onClick={handleSkip}>ข้าม</OrnateButton>
       </div>
     </>
   );

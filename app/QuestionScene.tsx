@@ -9,9 +9,11 @@ import DriedLeaves from "@/components/scene/DriedLeaves";
 import RatEyes from "@/components/scene/RatEyes";
 import Owl from "@/components/scene/Owl";
 import QuestionForm from "./QuestionForm";
+import { SceneStateProvider } from "./SceneStateContext";
 
 export default function QuestionScene() {
   return (
+    <SceneStateProvider>
     <main
       className="relative isolate flex flex-col items-center"
       style={{
@@ -95,5 +97,6 @@ export default function QuestionScene() {
         <QuestionForm />
       </div>
     </main>
+    </SceneStateProvider>
   );
 }

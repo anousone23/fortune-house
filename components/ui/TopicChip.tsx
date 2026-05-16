@@ -1,10 +1,11 @@
 interface TopicChipProps {
+  id?: string;
   label: string;
   selected: boolean;
   onClick: () => void;
 }
 
-export default function TopicChip({ label, selected, onClick }: TopicChipProps) {
+export default function TopicChip({ id: _id, label, selected, onClick }: TopicChipProps) {
   return (
     <button
       type="button"
