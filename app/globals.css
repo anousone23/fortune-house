@@ -157,7 +157,7 @@ body {
 /* Scene vignette overlay — centered radial gradient that tightens on focus. */
 @property --vignette-inner {
   syntax: "<percentage>";
-  inherits: true;
+  inherits: false;
   initial-value: 60%;
 }
 
@@ -169,6 +169,18 @@ body {
     var(--scrim) 100%
   );
   animation: vignette-breath 6s ease-in-out infinite;
+}
+
+.scene-vignette::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 70% 45% at 50% 10%,
+    rgba(0, 0, 0, 0.52) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
 }
 
 @keyframes vignette-breath {
