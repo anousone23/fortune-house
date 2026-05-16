@@ -1,15 +1,57 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence } from "framer-motion";
 import OrnateTextarea from "@/components/ui/OrnateTextarea";
 import TopicChip from "@/components/ui/TopicChip";
 import OrnateButton from "@/components/ui/OrnateButton";
+import ChipWisp from "@/components/scene/ChipWisp";
 import { SUGGESTIONS } from "./suggestions";
 import { useSceneState } from "./SceneStateContext";
 
 export default function QuestionForm() {
   const { state, setSelectedChip, setHasText } = useSceneState();
   const [question, setQuestion] = useState("");
+
+  const chipRefs = useRef<Map<string, HTMLButtonElement | null>>(new Map());
+  const [activeWisp, setActiveWisp] = useState<{
+    id: string;
+    fromRect: { x: number; y: number };
+    toRect: { x: number; y: number };
+    themeColor: string;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!state.hoveredChipId) {
+      setActiveWisp(null);
+      return;
+    }
+    const chip = chipRefs.current.get(state.hoveredChipId);
+    if (!chip) return;
+    const chipRect = chip.getBoundingClientRect();
+    const orbEl = document.querySelector(".crystal-ball") as HTMLElement | null;
+    const orbRect = orbEl
+      ? orbEl.getBoundingClientRect()
+      : ({
+          left: window.innerWidth / 2,
+          top: window.innerHeight / 2,
+          width: 0,
+          height: 0,
+        } as DOMRect);
+    const suggestion = SUGGESTIONS.find((s) => s.id === state.hoveredChipId);
+    setActiveWisp({
+      id: `${state.hoveredChipId}-${Date.now()}`,
+      fromRect: {
+        x: chipRect.left + chipRect.width / 2 - 6,
+        y: chipRect.top + chipRect.height / 2 - 6,
+      },
+      toRect: {
+        x: orbRect.left + orbRect.width / 2 - 6,
+        y: orbRect.top + orbRect.height / 2 - 6,
+      },
+      themeColor: suggestion?.themeColor ?? "#B26BFF",
+    });
+  }, [state.hoveredChipId]);
 
   const handleChip = (id: string, text: string) => {
     setSelectedChip(id);
@@ -51,6 +93,10 @@ export default function QuestionForm() {
               selected={state.selectedChipId === s.id}
               onClick={() => handleChip(s.id, s.text)}
               fanAngle={fanAngle}
+              chipRef={(el) => {
+                if (el) chipRefs.current.set(s.id, el);
+                else chipRefs.current.delete(s.id);
+              }}
             />
           );
         })}
@@ -63,6 +109,17 @@ export default function QuestionForm() {
         <OrnateButton variant="primary" onClick={handleStart}>เริ่มเลือกไพ่</OrnateButton>
         <OrnateButton variant="ghost" onClick={handleSkip}>ข้าม</OrnateButton>
       </div>
+
+      <AnimatePresence>
+        {activeWisp && (
+          <ChipWisp
+            key={activeWisp.id}
+            fromRect={activeWisp.fromRect}
+            toRect={activeWisp.toRect}
+            themeColor={activeWisp.themeColor}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }

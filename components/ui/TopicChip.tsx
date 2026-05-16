@@ -10,13 +10,15 @@ interface TopicChipProps {
   selected: boolean;
   onClick: () => void;
   fanAngle?: number;
+  chipRef?: (el: HTMLButtonElement | null) => void;
 }
 
-export default function TopicChip({ id, label, selected, onClick, fanAngle = 0 }: TopicChipProps) {
+export default function TopicChip({ id, label, selected, onClick, fanAngle = 0, chipRef }: TopicChipProps) {
   const { setHoveredChip } = useSceneState();
 
   return (
     <button
+      ref={chipRef}
       type="button"
       aria-pressed={selected}
       onClick={onClick}
