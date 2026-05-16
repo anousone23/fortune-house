@@ -17,7 +17,11 @@ export default function Vignette() {
         aria-hidden="true"
         className="scene-dim pointer-events-none absolute inset-0"
         animate={{ opacity: state.focused ? 0.7 : 0 }}
-        transition={reduce ? { duration: 0 } : { duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={
+          reduce
+            ? { duration: 0 }
+            : { duration: state.focused ? 1.6 : 0.8, ease: [0.4, 0, 0.6, 1] }
+        }
       />
     </>
   );
