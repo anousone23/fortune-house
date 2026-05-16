@@ -89,23 +89,19 @@ export default function QuestionForm() {
         className="chip-row mt-6 flex w-full max-w-[820px] gap-2 sm:gap-3"
         style={{ animation: "fade-up 600ms ease-out 320ms both" }}
       >
-        {SUGGESTIONS.map((s, idx) => {
-          const fanAngle = -12 + (24 / (SUGGESTIONS.length - 1)) * idx;
-          return (
-            <TopicChip
-              key={s.id}
-              id={s.id}
-              label={s.label}
-              selected={state.selectedChipId === s.id}
-              onClick={() => handleChip(s.id, s.text)}
-              fanAngle={fanAngle}
-              chipRef={(el) => {
-                if (el) chipRefs.current.set(s.id, el);
-                else chipRefs.current.delete(s.id);
-              }}
-            />
-          );
-        })}
+        {SUGGESTIONS.map((s) => (
+          <TopicChip
+            key={s.id}
+            id={s.id}
+            label={s.label}
+            selected={state.selectedChipId === s.id}
+            onClick={() => handleChip(s.id, s.text)}
+            chipRef={(el) => {
+              if (el) chipRefs.current.set(s.id, el);
+              else chipRefs.current.delete(s.id);
+            }}
+          />
+        ))}
       </div>
 
       <div
