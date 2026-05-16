@@ -116,10 +116,15 @@ body {
   }
 }
 
-/* OrnateTextarea perspective tilt (desktop only) + focus-within glow */
+/* OrnateTextarea perspective tilt (desktop only) + cursor-follow border glow.
+   The frame's focus indicator is a gold "spotlight" drawn along the border that
+   tracks the cursor position. JS in OrnateTextarea sets --mouse-x and --mouse-y
+   (percentages within the frame) on mousemove; the ::after pseudo-element
+   masks a radial gradient down to a thin border ring. */
 .ornate-textarea-frame {
+  --mouse-x: 50%;
+  --mouse-y: 50%;
   box-shadow: inset 0 0 24px rgba(0, 0, 0, 0.5);
-  transition: box-shadow 200ms ease-out;
 }
 @media (min-width: 641px) {
   .ornate-textarea-frame {
@@ -127,22 +132,41 @@ body {
     transform-origin: top center;
   }
 }
-/* Suppress browser default outline on the textarea itself; the frame
-   provides a visible focus indicator via :focus-within box-shadow below. */
+/* Suppress browser default outline on the textarea — the cursor-follow border
+   highlight below acts as the visible focus indicator. */
 .ornate-textarea-frame textarea:focus,
 .ornate-textarea-frame textarea:focus-visible {
   outline: none;
 }
-.ornate-textarea-frame:focus-within {
-  box-shadow:
-    inset 0 0 24px rgba(0, 0, 0, 0.5),
-    0 0 0 2px var(--gold-primary),
-    0 0 12px var(--accent-mystic);
+.ornate-textarea-frame::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--radius-sm);
+  padding: 1px;
+  background: radial-gradient(
+    circle 90px at var(--mouse-x) var(--mouse-y),
+    var(--gold-primary) 0%,
+    rgba(230, 212, 163, 0.35) 35%,
+    transparent 75%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+.ornate-textarea-frame:focus-within::after {
+  opacity: 1;
 }
 @media (prefers-reduced-motion: reduce) {
-  .ornate-textarea-frame {
-    transition: none;
-  }
+  .ornate-textarea-frame::after { transition: none; }
 }
 
 /* OrnateButton hover glow (desktop pointer:fine only) */

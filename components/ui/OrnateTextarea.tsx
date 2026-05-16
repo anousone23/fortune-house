@@ -18,6 +18,17 @@ export default function OrnateTextarea({ value, onChange }: OrnateTextareaProps)
   const reduce = useReducedMotion();
   const [sparks, setSparks] = useState<Spark[]>([]);
   const lastSpawnRef = useRef(0);
+  const frameRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const frame = frameRef.current;
+    if (!frame) return;
+    const rect = frame.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    frame.style.setProperty("--mouse-x", `${x}%`);
+    frame.style.setProperty("--mouse-y", `${y}%`);
+  };
 
   const spawnSparks = () => {
     if (reduce) return;
@@ -49,7 +60,9 @@ export default function OrnateTextarea({ value, onChange }: OrnateTextareaProps)
 
   return (
     <div
+      ref={frameRef}
       className="ornate-textarea-frame relative w-full"
+      onMouseMove={handleMouseMove}
       style={{
         background: "rgba(26, 5, 8, 0.72)",
         border: "1px solid var(--gold-stroke)",
