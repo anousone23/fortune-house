@@ -1,22 +1,31 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
 import CandleFlame from "./CandleFlame";
+import { useSceneState } from "@/app/SceneStateContext";
 
 interface CandelabraProps {
   position: "left" | "right";
 }
 
 const WICKS = [
-  { xPct: 20, yPct: 18 }, // left arm (shorter)
-  { xPct: 52, yPct: 10 }, // center arm (taller)
-  { xPct: 83, yPct: 18 }, // right arm (shorter)
+  { xPct: 20, yPct: 18 },
+  { xPct: 52, yPct: 10 },
+  { xPct: 83, yPct: 18 },
 ] as const;
 
 export default function Candelabra({ position }: CandelabraProps) {
+  const { state } = useSceneState();
+  const dim = state.focused;
+
   return (
-    <div
+    <motion.div
       aria-hidden="true"
       className="candelabra pointer-events-none"
       data-side={position}
+      animate={{ opacity: dim ? 0.7 : 1, filter: dim ? "brightness(0.8)" : "brightness(1)" }}
+      transition={{ duration: dim ? 0.4 : 0.6, ease: [0.16, 1, 0.3, 1] }}
     >
       <Image
         src="/scene/candelabra.png"
@@ -36,6 +45,6 @@ export default function Candelabra({ position }: CandelabraProps) {
           }}
         />
       ))}
-    </div>
+    </motion.div>
   );
 }
