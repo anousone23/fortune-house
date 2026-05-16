@@ -2,22 +2,14 @@ import Image from "next/image";
 
 export default function BackgroundScene() {
   return (
-    <picture
+    <Image
       aria-hidden="true"
-      style={{ position: "absolute", inset: 0, display: "block" }}
-    >
-      <source
-        media="(max-width: 640px)"
-        srcSet="/scene/bg-chamber-mobile.jpeg"
-      />
-      <Image
-        src="/scene/bg-chamber-desktop-without-candles.png"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        style={{ objectFit: "cover", objectPosition: "center" }}
-      />
-    </picture>
+      src="/scene/bg.png"
+      alt=""
+      fill
+      priority
+      sizes="100vw"
+      style={{ objectFit: "cover", objectPosition: "center" }}
+    />
   );
 }

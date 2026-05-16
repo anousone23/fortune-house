@@ -32,16 +32,16 @@
 
   /* Orb placement (overridden per breakpoint) */
   --orb-x: 50%;
-  --orb-y: 55%;
+  --orb-y: 64%;
 
-  /* Aspect ratio of the desktop background image (bg-chamber-desktop-without-candles.png).
+  /* Aspect ratio of the background image (bg.png).
      Shared by anything that needs to mimic the bg's object-fit: cover transform
      so children stay pinned to a point on the image regardless of viewport. */
-  --bg-aspect: calc(2400 / 1340);
+  --bg-aspect: calc(2752 / 1536);
 }
 
 @media (max-width: 640px) {
   :root {
-    --orb-y: 30%;
+    --orb-y: 64%;
   }
 }

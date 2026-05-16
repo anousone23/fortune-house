@@ -12,7 +12,7 @@ export default function RatEyes() {
         className="rat-eye"
         style={{
           left: "9vw",
-          top: "92vh",
+          top: "94vh",
           animation: "eye-blink 4s linear infinite 0s",
         }}
       />
@@ -20,7 +20,7 @@ export default function RatEyes() {
         className="rat-eye"
         style={{
           left: "calc(9vw + 12px)",
-          top: "92vh",
+          top: "94vh",
           animation: "eye-blink 4.7s linear infinite 1.2s",
         }}
       />
