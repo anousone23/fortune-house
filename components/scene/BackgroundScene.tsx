@@ -8,7 +8,7 @@ export default function BackgroundScene() {
     >
       <source
         media="(max-width: 640px)"
-        srcSet="/scene/bg-chamber-mobile.png"
+        srcSet="/scene/bg-chamber-mobile.jpeg"
       />
       <Image
         src="/scene/bg-chamber-desktop-without-candles.png"

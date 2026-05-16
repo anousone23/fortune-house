@@ -62,6 +62,15 @@ body {
   .crystal-ball {
     width: clamp(140px, 40vw, 240px);
   }
+  /* Floating-orb grounding: stack a soft outer bloom + tight inner shadow
+     so the orb appears to cast purple light and a shadow onto the velvet
+     below, instead of floating disconnected from the scene. */
+  .crystal-ball img {
+    filter:
+      drop-shadow(0 18px 28px rgba(178, 107, 255, 0.55))
+      drop-shadow(0 8px 14px rgba(91, 31, 174, 0.5))
+      drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+  }
 }
 
 /* Mobile: chip row becomes a horizontal scroll-snap lane */

@@ -20,15 +20,21 @@ export default function CrystalBall() {
           filter: "blur(8px)",
         }}
       />
-      <Image
-        src="/scene/orb.png"
-        alt=""
-        width={760}
-        height={760}
-        sizes="(max-width: 640px) 40vw, 24vw"
-        preload
-        style={{ width: "100%", height: "auto", position: "relative" }}
-      />
+      <picture>
+        <source
+          media="(max-width: 640px)"
+          srcSet="/scene/orb-mobile.png"
+        />
+        <Image
+          src="/scene/orb.png"
+          alt=""
+          width={760}
+          height={760}
+          sizes="(max-width: 640px) 40vw, 24vw"
+          preload
+          style={{ width: "100%", height: "auto", position: "relative" }}
+        />
+      </picture>
     </div>
   );
 }
