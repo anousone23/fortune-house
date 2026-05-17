@@ -370,7 +370,6 @@ body {
   width: clamp(90px, 13vw, 200px);
   aspect-ratio: 2 / 3;
   z-index: 1;
-  pointer-events: none;
   transform-origin: 50% 0%;
   animation: herb-sway 5.2s ease-in-out infinite;
   will-change: transform;

@@ -9,13 +9,17 @@ export default function HangingBundle({ position }: Props) {
       : "/scene/herb-bundle-right.png";
 
   return (
-    <div aria-hidden="true" className="hanging-bundle" data-side={position}>
+    <div
+      aria-hidden="true"
+      className="hanging-bundle pointer-events-none"
+      data-side={position}
+    >
       <Image
         src={src}
         alt=""
         width={300}
         height={450}
-        sizes="(max-width: 640px) 18vw, 12vw"
+        sizes="(max-width: 640px) 90px, 13vw"
         priority={false}
       />
     </div>
