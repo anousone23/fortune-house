@@ -4,7 +4,7 @@ export default function BackgroundScene() {
   return (
     <Image
       aria-hidden="true"
-      src="/scene/bg.png"
+      src="/scene/main-bg.png"
       alt=""
       fill
       priority
