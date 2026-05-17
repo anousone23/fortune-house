@@ -343,18 +343,18 @@ body {
 .candelabra {
   position: absolute;
   top: calc(var(--orb-y) - clamp(10px, 1.2vw, 20px));
-  width: clamp(64px, 8.3vw, 127px);
+  width: clamp(70px, 9vw, 140px);
   aspect-ratio: 2 / 3;
   z-index: 1;
 }
 
 .candelabra[data-side="left"] {
-  left: calc(var(--orb-x) - clamp(110px, 14vw, 220px));
+  left: calc(var(--orb-x) - clamp(105px, 13.3vw, 210px));
   transform: translate(-50%, -50%);
 }
 
 .candelabra[data-side="right"] {
-  left: calc(var(--orb-x) + clamp(110px, 14vw, 220px));
+  left: calc(var(--orb-x) + clamp(105px, 13.3vw, 210px));
   transform: translate(-50%, -50%);
 }
 
