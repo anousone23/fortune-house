@@ -92,8 +92,8 @@ export default function ShelfBottle({ variant, side, slot }: Props) {
   }, [side, slot, handleWobble, reduce]);
 
   useEffect(() => {
-    setFocused(state.focused);
-  }, [state.focused]);
+    setFocused(state.focused || state.ritualActive);
+  }, [state.focused, state.ritualActive]);
 
   return (
     <motion.div

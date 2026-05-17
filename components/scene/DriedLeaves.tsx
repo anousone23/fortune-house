@@ -64,7 +64,7 @@ export default function DriedLeaves() {
     if (reduce) return;
     const container = containerRef.current;
     if (!container) return;
-    const rate = state.focused ? SLOW_RATE : 1;
+    const rate = state.ritualActive ? 0.15 : state.focused ? SLOW_RATE : 1;
     const apply = () => {
       container.querySelectorAll(".leaf-falling").forEach((el) => {
         el.getAnimations().forEach((a) => {
@@ -76,7 +76,7 @@ export default function DriedLeaves() {
     // Some browsers register CSS animations on the next frame after mount.
     const raf = requestAnimationFrame(apply);
     return () => cancelAnimationFrame(raf);
-  }, [state.focused, leaves.length, reduce]);
+  }, [state.focused, state.ritualActive, leaves.length, reduce]);
 
   return (
     <div

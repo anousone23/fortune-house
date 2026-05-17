@@ -30,14 +30,18 @@ export default function CandleFlame({ style, seed = 0 }: CandleFlameProps) {
       v.pause();
     } else {
       const baseRate = PLAYBACK_RATES[idx];
-      v.playbackRate = state.focused ? baseRate * SLOW_RATE : baseRate;
+      v.playbackRate = state.ritualActive
+        ? baseRate * 0.3
+        : state.focused
+          ? baseRate * SLOW_RATE
+          : baseRate;
       v.play().catch((err) => {
         if (process.env.NODE_ENV !== "production") {
           console.warn("[CandleFlame] video.play() rejected:", err);
         }
       });
     }
-  }, [reduce, idx, state.focused]);
+  }, [reduce, idx, state.focused, state.ritualActive]);
 
   return (
     <div
