@@ -1,40 +1,61 @@
 "use client";
-import { useRef } from "react";
+
+// Two red glowing dots — a rat hiding in the dark, peeking from one corner.
+// On hover or click, the eyes grow ("startled"), then instantly disappear and
+// reappear on the opposite side of the scene. Side persists for the rest of
+// the session — every interaction just toggles between left and right.
+
+import { useRef, useState } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
-const FLEE_DISTANCE_PX = 240;
-const HIDE_DELAY_MS = 6000;
+type Side = "left" | "right";
+
+// Wrapper top-left positions for each side. The wrapper is 32x32; eyes inside
+// are at x: 8 and 20, y: 13. Right side is the mirror of the left.
+const POSITIONS: Record<Side, { left: string; top: string }> = {
+  left:  { left: "calc(9vw - 8px)",   top: "calc(94vh - 13px)" },
+  right: { left: "calc(91vw - 24px)", top: "calc(94vh - 13px)" },
+};
 
 export default function RatEyes() {
   const controls = useAnimationControls();
   const phaseRef = useRef<"idle" | "active">("idle");
+  const [side, setSide] = useState<Side>("left");
   const reduce = useReducedMotion();
 
   const handleStartle = async () => {
     if (phaseRef.current !== "idle") return;
     phaseRef.current = "active";
 
-    if (reduce) {
-      await controls.start({ opacity: 0, transition: { duration: 0.2 } });
-      await new Promise((r) => setTimeout(r, HIDE_DELAY_MS));
-      await controls.start({ opacity: 1, transition: { duration: 0.2 } });
-    } else {
+    if (!reduce) {
+      // Grow + hold the "startled" pose
       await controls.start({
-        scale:   [1, 1.7, 1.7, 1.4, 1.4],
-        x:       [0,   0,   0, FLEE_DISTANCE_PX, FLEE_DISTANCE_PX],
-        opacity: [1,   1,   1,   1, 0],
-        transition: { duration: 1.1, times: [0, 0.18, 0.35, 0.85, 1.0] },
-      });
-      await new Promise((r) => setTimeout(r, HIDE_DELAY_MS));
-      await controls.start({
-        scale: 1, x: 0, opacity: 1,
-        transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+        scale: [1, 1.7, 1.7],
+        transition: { duration: 0.4, times: [0, 0.5, 1] },
       });
     }
 
+    // Instant disappear (no fade)
+    await controls.start({ opacity: 0, transition: { duration: 0 } });
+
+    // Teleport to the opposite side
+    setSide((prev) => (prev === "left" ? "right" : "left"));
+
+    // Wait for React to commit the new position before reappearing
+    await new Promise((r) => setTimeout(r, 80));
+
+    // Instant reappear at the new side, scale back to idle
+    await controls.start({
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0 },
+    });
+
     phaseRef.current = "idle";
   };
+
+  const pos = POSITIONS[side];
 
   return (
     <div
@@ -44,11 +65,12 @@ export default function RatEyes() {
     >
       <motion.div
         onMouseEnter={handleStartle}
+        onClick={handleStartle}
         animate={controls}
         style={{
           position: "absolute",
-          left: "calc(9vw - 8px)",
-          top: "calc(94vh - 13px)",
+          left: pos.left,
+          top: pos.top,
           width: 32,
           height: 32,
           pointerEvents: "auto",
@@ -57,7 +79,7 @@ export default function RatEyes() {
       >
         <span
           className="rat-eye"
-          style={{ left: 8,  top: 13, animation: "eye-blink 4s linear infinite 0s" }}
+          style={{ left: 8, top: 13, animation: "eye-blink 4s linear infinite 0s" }}
         />
         <span
           className="rat-eye"
