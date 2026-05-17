@@ -35,7 +35,7 @@ export default function QuestionScene() {
       <RatEyes />
 
       <div
-        className="relative z-10 flex w-full max-w-[1100px] flex-col items-center px-6 pt-[10vh]"
+        className="relative z-10 flex w-full max-w-[1100px] flex-col items-center px-6 pt-[4vh]"
         style={{ paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}
       >
         <header
@@ -90,7 +90,7 @@ export default function QuestionScene() {
 
         {/* Spacer where the orb sits behind the content */}
         <div
-          style={{ height: "clamp(180px, 26vw, 320px)" }}
+          style={{ height: "clamp(120px, 18vw, 240px)" }}
           aria-hidden="true"
         />
 
