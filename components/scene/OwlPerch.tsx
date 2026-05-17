@@ -27,7 +27,7 @@ export default function OwlPerch() {
       }}
     >
       <Image
-        src="/scene/owl-perch.png"
+        src="/scene/owl-perch-v2.png"
         alt=""
         fill
         sizes="100vw"
