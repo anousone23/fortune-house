@@ -617,6 +617,10 @@ body {
   --bottle-glow: rgba(220, 210, 195, 0.55);
 }
 
+.shelf-bottle[data-variant="3"] img {
+  transform: translateY(5%);
+}
+
 @keyframes shelf-bottle-wobble {
   0%,
   100% {
