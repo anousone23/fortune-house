@@ -249,7 +249,9 @@ body {
   opacity: 1;
 }
 
-/* OrnateButton click shine */
+/* OrnateButton click shine — animates background-position so the band stays
+   inside the button bounds (translating the pseudo bleeds past the rounded
+   corners since the ornaments need overflow: visible). */
 .ornate-button::before {
   content: "";
   position: absolute;
@@ -261,7 +263,8 @@ body {
     rgba(255, 245, 220, 0.65) 50%,
     transparent 65%
   );
-  transform: translateX(-110%);
+  background-size: 200% 100%;
+  background-position: -50% 0;
   pointer-events: none;
   opacity: 0;
   mix-blend-mode: screen;
@@ -271,14 +274,14 @@ body {
 }
 @keyframes button-shine {
   0% {
-    transform: translateX(-110%);
+    background-position: -50% 0;
     opacity: 0.9;
   }
   50% {
     opacity: 1;
   }
   100% {
-    transform: translateX(110%);
+    background-position: 150% 0;
     opacity: 0;
   }
 }
