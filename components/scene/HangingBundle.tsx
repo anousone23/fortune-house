@@ -156,8 +156,8 @@ export default function HangingBundle({ position, layer = "front" }: Props) {
                   <Image
                     src={leafSrc}
                     alt=""
-                    width={24}
-                    height={24}
+                    width={32}
+                    height={32}
                     style={{ display: "block" }}
                   />
                 </div>
