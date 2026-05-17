@@ -60,7 +60,7 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
           style={{
             position: "absolute", left: -10, top: "50%",
             transform: "translateY(-50%)", display: "inline-flex",
-            filter: "brightness(1.35) drop-shadow(0 0 1px rgba(230,212,163,0.5))",
+            filter: "drop-shadow(0 0 1px rgba(230,212,163,0.5))",
           }}
         >
           <ButtonOrnament />
@@ -71,7 +71,7 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
           style={{
             position: "absolute", right: -10, top: "50%",
             transform: "translateY(-50%) scaleX(-1)", display: "inline-flex",
-            filter: "brightness(1.35) drop-shadow(0 0 1px rgba(230,212,163,0.5))",
+            filter: "drop-shadow(0 0 1px rgba(230,212,163,0.5))",
           }}
         >
           <ButtonOrnament />
