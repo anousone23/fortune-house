@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import Image from "next/image";
+import { motion, useAnimationControls } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useSceneState } from "@/app/SceneStateContext";
 
@@ -19,36 +20,91 @@ const BOTTLE_SRC: Record<Variant, string> = {
   6: "/scene/bottle-6.png",
 };
 
-const SLOW_RATE = 0.55;
+type Handler = () => void;
+const subscribers = new Map<string, Handler>();
+let schedulerTimer: ReturnType<typeof setTimeout> | null = null;
+let schedulerFocused = false;
+
+function pickAndFire() {
+  const ids = Array.from(subscribers.keys());
+  if (ids.length === 0) return;
+  const id = ids[Math.floor(Math.random() * ids.length)];
+  subscribers.get(id)?.();
+}
+
+function scheduleNext() {
+  const [min, max] = schedulerFocused ? [6000, 10000] : [2000, 4000];
+  const delay = min + Math.random() * (max - min);
+  schedulerTimer = setTimeout(() => {
+    pickAndFire();
+    scheduleNext();
+  }, delay);
+}
+
+function startScheduler() {
+  if (schedulerTimer) return;
+  scheduleNext();
+}
+
+function stopScheduler() {
+  if (schedulerTimer) {
+    clearTimeout(schedulerTimer);
+    schedulerTimer = null;
+  }
+}
+
+function setFocused(focused: boolean) {
+  schedulerFocused = focused;
+}
 
 export default function ShelfBottle({ variant, side, slot }: Props) {
   const reduce = useReducedMotion();
   const { state } = useSceneState();
-  const wrapperRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimationControls();
+  const phaseRef = useRef<"idle" | "active">("idle");
+
+  const handleWobble = useCallback(async () => {
+    if (reduce || phaseRef.current !== "idle") return;
+    phaseRef.current = "active";
+    try {
+      await controls.start({
+        rotate: [0, -3, 2, -2, 1, 0],
+        transition: {
+          duration: 1.5,
+          ease: "easeInOut",
+          times: [0, 0.2, 0.45, 0.7, 0.88, 1],
+        },
+      });
+    } finally {
+      phaseRef.current = "idle";
+    }
+  }, [controls, reduce]);
 
   useEffect(() => {
     if (reduce) return;
-    const el = wrapperRef.current;
-    if (!el) return;
-    const rate = state.focused ? SLOW_RATE : 1;
-    const apply = () => {
-      el.getAnimations({ subtree: true }).forEach((a) => {
-        a.playbackRate = rate;
-      });
+    const id = `${side}-${slot}`;
+    subscribers.set(id, handleWobble);
+    startScheduler();
+    return () => {
+      subscribers.delete(id);
+      if (subscribers.size === 0) stopScheduler();
     };
-    apply();
-    const raf = requestAnimationFrame(apply);
-    return () => cancelAnimationFrame(raf);
-  }, [state.focused, reduce]);
+  }, [side, slot, handleWobble, reduce]);
+
+  useEffect(() => {
+    setFocused(state.focused);
+  }, [state.focused]);
 
   return (
-    <div
-      ref={wrapperRef}
+    <motion.div
       aria-hidden="true"
-      className="shelf-bottle pointer-events-none"
+      className="shelf-bottle"
       data-side={side}
       data-slot={slot}
       data-variant={variant}
+      animate={controls}
+      onMouseEnter={handleWobble}
+      onClick={handleWobble}
     >
       <Image
         src={BOTTLE_SRC[variant]}
@@ -58,6 +114,6 @@ export default function ShelfBottle({ variant, side, slot }: Props) {
         sizes="(max-width: 640px) 6vw, 5vw"
         priority={false}
       />
-    </div>
+    </motion.div>
   );
 }
