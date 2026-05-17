@@ -534,28 +534,28 @@ body {
    the prior `times` array from framer-motion. */
 @keyframes owl-head-wobble {
   0% {
-    transform: rotate(0deg);
+    rotate: 0deg;
   }
   12% {
-    transform: rotate(-15deg);
+    rotate: -15deg;
   }
   25% {
-    transform: rotate(0deg);
+    rotate: 0deg;
   }
   40% {
-    transform: rotate(18deg);
+    rotate: 18deg;
   }
   55% {
-    transform: rotate(0deg);
+    rotate: 0deg;
   }
   70% {
-    transform: rotate(-8deg);
+    rotate: -8deg;
   }
   85% {
-    transform: rotate(4deg);
+    rotate: 4deg;
   }
   100% {
-    transform: rotate(0deg);
+    rotate: 0deg;
   }
 }
 .owl-head {
