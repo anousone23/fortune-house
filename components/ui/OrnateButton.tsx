@@ -85,7 +85,7 @@ export default function OrnateButton({
           fontWeight: 600,
           fontFamily: "inherit",
           fontSize: "1rem",
-          cursor: loading ? "wait" : "pointer",
+          cursor: loading ? "not-allowed" : "pointer",
         }}
       >
         <span
