@@ -1,4 +1,14 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 // The OUTER wrapper below mimics the bg image's object-fit:cover transform,
 // so its rectangle matches the bg image's rendered area pixel-for-pixel —
@@ -19,7 +29,60 @@ const HEAD_TOP = "5%";
 const HEAD_LEFT = "24%";
 const HEAD_WIDTH_PCT = "60%";
 
+// Cursor-follow tuning constants (single-line tuning knobs).
+const MAX_YAW = 25; // degrees — head's rotation limit
+const REFERENCE_DISTANCE_PX = 400; // cursor distance at which yaw saturates
+const IDLE_TIMEOUT_MS = 1500; // ms of no mousemove → head returns to neutral
+const SPRING_CONFIG = { stiffness: 120, damping: 22 };
+
 export default function Owl() {
+  const reduce = useReducedMotion();
+  const headRef = useRef<HTMLDivElement>(null);
+  const headCenterRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const idleTimerRef = useRef<number | null>(null);
+  const targetYaw = useMotionValue(0);
+  const smoothedYaw = useSpring(targetYaw, SPRING_CONFIG);
+  // The head's body wrapper has scaleX(-1) — rotation inside a horizontally
+  // flipped frame is visually inverted, so we negate before applying.
+  const displayYaw = useTransform(smoothedYaw, (v) => -v);
+
+  // Cache the head's viewport center on mount + on every resize. Reads from
+  // the actual rendered head element via ref so it accounts for the bg-cover
+  // wrapper, the position transform, and the scaleX(-1) flip.
+  useEffect(() => {
+    const measure = () => {
+      if (!headRef.current) return;
+      const r = headRef.current.getBoundingClientRect();
+      headCenterRef.current = {
+        x: r.left + r.width / 2,
+        y: r.top + r.height / 2,
+      };
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, []);
+
+  // Cursor → target yaw, with idle-timer recovery.
+  useEffect(() => {
+    if (reduce) return;
+    const onMove = (e: MouseEvent) => {
+      const dx = e.clientX - headCenterRef.current.x;
+      const raw = (dx / REFERENCE_DISTANCE_PX) * MAX_YAW;
+      const clamped = Math.max(-MAX_YAW, Math.min(MAX_YAW, raw));
+      targetYaw.set(clamped);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = window.setTimeout(() => {
+        targetYaw.set(0);
+      }, IDLE_TIMEOUT_MS);
+    };
+    window.addEventListener("mousemove", onMove);
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
+    };
+  }, [targetYaw, reduce]);
+
   return (
     <div
       aria-hidden="true"
@@ -70,13 +133,15 @@ export default function Owl() {
               height: "auto",
             }}
           />
-          <div
+          <motion.div
+            ref={headRef}
             className="owl-head"
             style={{
               position: "absolute",
               top: HEAD_TOP,
               left: HEAD_LEFT,
               width: HEAD_WIDTH_PCT,
+              rotate: displayYaw,
             }}
           >
             <Image
@@ -86,7 +151,7 @@ export default function Owl() {
               height={80}
               style={{ display: "block", width: "100%", height: "auto" }}
             />
-          </div>
+          </motion.div>
         </div>
       </div>
     </div>
