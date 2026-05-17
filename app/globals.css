@@ -531,6 +531,7 @@ body {
 }
 
 .shelf-bottle::before {
+  display: none;
   content: "";
   position: absolute;
   inset: 30% -10% 10% -10%;
