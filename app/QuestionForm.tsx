@@ -60,6 +60,12 @@ export default function QuestionForm() {
   }, [state.hoveredChipId, reduce]);
 
   const handleChip = (id: string, text: string) => {
+    if (state.selectedChipId === id) {
+      setSelectedChip(null);
+      setQuestion("");
+      setHasText(false);
+      return;
+    }
     setSelectedChip(id);
     setQuestion(text);
     setHasText(text.length > 0);
@@ -79,7 +85,13 @@ export default function QuestionForm() {
 
   return (
     <>
-      <div className="w-full" style={{ maxWidth: 720, animation: "fade-up 600ms ease-out 240ms both" }}>
+      <div
+        className="w-full"
+        style={{
+          maxWidth: 720,
+          animation: "fade-up 600ms ease-out 240ms both",
+        }}
+      >
         <OrnateTextarea value={question} onChange={handleChange} />
       </div>
 
@@ -108,8 +120,12 @@ export default function QuestionForm() {
         className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4"
         style={{ animation: "fade-up 600ms ease-out 400ms both" }}
       >
-        <OrnateButton variant="primary" onClick={handleStart}>เริ่มเลือกไพ่</OrnateButton>
-        <OrnateButton variant="ghost" onClick={handleSkip}>ข้าม</OrnateButton>
+        <OrnateButton variant="primary" onClick={handleStart}>
+          เริ่มเลือกไพ่
+        </OrnateButton>
+        <OrnateButton variant="ghost" onClick={handleSkip}>
+          ข้าม
+        </OrnateButton>
       </div>
 
       <AnimatePresence>
