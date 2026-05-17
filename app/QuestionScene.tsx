@@ -25,6 +25,8 @@ export default function QuestionScene() {
         }}
       >
         <BackgroundScene />
+        <HangingBundle position="left" layer="back" />
+        <HangingBundle position="right" layer="back" />
         <HangingBundle position="left" />
         <HangingBundle position="right" />
         <OwlPerch />

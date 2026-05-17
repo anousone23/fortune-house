@@ -1,8 +1,11 @@
 import Image from "next/image";
 
-type Props = { position: "left" | "right" };
+type Props = {
+  position: "left" | "right";
+  layer?: "front" | "back";
+};
 
-export default function HangingBundle({ position }: Props) {
+export default function HangingBundle({ position, layer = "front" }: Props) {
   const src =
     position === "left"
       ? "/scene/herb-bundle-left.png"
@@ -13,6 +16,7 @@ export default function HangingBundle({ position }: Props) {
       aria-hidden="true"
       className="hanging-bundle pointer-events-none"
       data-side={position}
+      data-layer={layer}
     >
       <Image
         src={src}
