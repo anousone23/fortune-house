@@ -14,89 +14,89 @@ import { SceneStateProvider } from "./SceneStateContext";
 export default function QuestionScene() {
   return (
     <SceneStateProvider>
-    <main
-      className="relative isolate flex flex-col items-center"
-      style={{
-        minHeight: "100dvh",
-        background: "var(--ink-velvet-deep)",
-        overflow: "hidden",
-      }}
-    >
-      <BackgroundScene />
-      <Candelabra position="left" />
-      <Candelabra position="right" />
-      <Vignette />
-      <CrystalBall />
-      <MagicSparks />
-      <FallingPetals />
-      <DriedLeaves />
-      <DustMotes />
-      <Owl />
-      <RatEyes />
-
-      <div
-        className="relative z-10 flex w-full max-w-[1100px] flex-col items-center px-6 pt-[4vh]"
-        style={{ paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}
+      <main
+        className="relative isolate flex flex-col items-center"
+        style={{
+          minHeight: "100dvh",
+          background: "var(--ink-velvet-deep)",
+          overflow: "hidden",
+        }}
       >
-        <header
-          className="text-center"
-          style={{ animation: "fade-up 600ms ease-out both" }}
-        >
-          <h1
-            className="font-semibold"
-            style={{
-              fontSize: "clamp(20px, 4.5vw, 36px)",
-              color: "var(--text-primary)",
-            }}
-          >
-            คุณอยากถามเรื่องอะไร ?
-          </h1>
-          <div
-            aria-hidden="true"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-              margin: "10px auto 12px",
-              color: "var(--gold-stroke)",
-            }}
-          >
-            <span
-              style={{
-                width: 180,
-                height: 1,
-                background:
-                  "linear-gradient(to right, transparent, var(--gold-stroke))",
-              }}
-            />
-            <span style={{ fontSize: 10, letterSpacing: "0.2em" }}>✦✦✦</span>
-            <span
-              style={{
-                width: 180,
-                height: 1,
-                background:
-                  "linear-gradient(to left, transparent, var(--gold-stroke))",
-              }}
-            />
-          </div>
-          <p style={{ color: "var(--text-muted)" }}>
-            เลือกหัวข้อหรือพิมพ์คำถามที่คุณอยากรู้ในตอนนี้
-          </p>
-          <p style={{ marginTop: 4, color: "var(--text-muted)" }}>
-            หรือคุณจะข้ามขั้นตอนนี้ไปก่อนก็ได้
-          </p>
-        </header>
+        <BackgroundScene />
+        <Candelabra position="left" />
+        <Candelabra position="right" />
+        <Vignette />
+        <CrystalBall />
+        <MagicSparks />
+        <FallingPetals />
+        <DriedLeaves />
+        <DustMotes />
+        <Owl />
+        <RatEyes />
 
-        {/* Spacer where the orb sits behind the content */}
         <div
-          style={{ height: "clamp(120px, 18vw, 240px)" }}
-          aria-hidden="true"
-        />
+          className="relative z-10 flex w-full max-w-[1100px] flex-col items-center px-6 pt-[8vh]"
+          style={{ paddingBottom: "max(24px, env(safe-area-inset-bottom))" }}
+        >
+          <header
+            className="text-center"
+            style={{ animation: "fade-up 600ms ease-out both" }}
+          >
+            <h1
+              className="font-semibold"
+              style={{
+                fontSize: "clamp(20px, 4.5vw, 36px)",
+                color: "var(--text-primary)",
+              }}
+            >
+              คุณอยากถามเรื่องอะไร ?
+            </h1>
+            <div
+              aria-hidden="true"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 10,
+                margin: "10px auto 12px",
+                color: "var(--gold-stroke)",
+              }}
+            >
+              <span
+                style={{
+                  width: 180,
+                  height: 1,
+                  background:
+                    "linear-gradient(to right, transparent, var(--gold-stroke))",
+                }}
+              />
+              <span style={{ fontSize: 10, letterSpacing: "0.2em" }}>✦✦✦</span>
+              <span
+                style={{
+                  width: 180,
+                  height: 1,
+                  background:
+                    "linear-gradient(to left, transparent, var(--gold-stroke))",
+                }}
+              />
+            </div>
+            <p style={{ color: "var(--text-muted)" }}>
+              เลือกหัวข้อหรือพิมพ์คำถามที่คุณอยากรู้ในตอนนี้
+            </p>
+            <p style={{ marginTop: 4, color: "var(--text-muted)" }}>
+              หรือคุณจะข้ามขั้นตอนนี้ไปก่อนก็ได้
+            </p>
+          </header>
 
-        <QuestionForm />
-      </div>
-    </main>
+          {/* Spacer where the orb sits behind the content */}
+          <div
+            style={{ height: "clamp(180px, 26vw, 320px)" }}
+            aria-hidden="true"
+          />
+
+          <QuestionForm />
+        </div>
+      </main>
     </SceneStateProvider>
   );
 }
