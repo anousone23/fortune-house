@@ -23,12 +23,12 @@ function makeLeaf(x: number, y: number): Leaf {
   const sign = Math.random() < 0.5 ? -1 : 1;
   return {
     id: nextLeafId++,
-    x: x + (Math.random() - 0.5) * 40,
+    x: x + (Math.random() - 0.5) * 70,
     y,
     drift: [
-      (Math.random() - 0.5) * 60,
-      (Math.random() - 0.5) * 80,
-      (Math.random() - 0.5) * 60,
+      (Math.random() - 0.5) * 140,
+      (Math.random() - 0.5) * 180,
+      (Math.random() - 0.5) * 140,
     ],
     rotations: [
       sign * (40 + Math.random() * 80),
