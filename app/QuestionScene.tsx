@@ -7,6 +7,7 @@ import MagicSparks from "@/components/scene/MagicSparks";
 import FallingPetals from "@/components/scene/FallingPetals";
 import DriedLeaves from "@/components/scene/DriedLeaves";
 import RatEyes from "@/components/scene/RatEyes";
+import RitualWisps from "@/components/scene/RitualWisps";
 import Owl from "@/components/scene/Owl";
 import HangingBundle from "@/components/scene/HangingBundle";
 import OwlPerch from "@/components/scene/OwlPerch";
@@ -54,6 +55,7 @@ export default function QuestionScene() {
         <DustMotes />
         <Owl />
         <RatEyes />
+        <RitualWisps />
 
         <div
           className="relative z-10 flex w-full max-w-[1100px] flex-col items-center px-6 pt-[8vh]"
