@@ -75,13 +75,17 @@ export function SceneStateProvider({ children }: { children: ReactNode }) {
     return () => controls.stop();
   }, [energy, target, reduce]);
 
-  const ready = state.hasText && state.selectedChipId !== null;
+  // "ready" fires from either signal — a chip selection OR text in the textarea.
+  const ready = state.hasText || state.selectedChipId !== null;
 
   const tintColor = (() => {
     // hovered overrides selected for a "previewing" feel
     const id = state.hoveredChipId ?? state.selectedChipId;
-    if (!id) return null;
-    return SUGGESTIONS.find((s) => s.id === id)?.themeColor ?? null;
+    if (id) return SUGGESTIONS.find((s) => s.id === id)?.themeColor ?? null;
+    // text in the textarea (no chip yet) → fall back to the gold token so the
+    // orb gets a non-empty glow indicator
+    if (state.hasText) return "var(--gold-primary)";
+    return null;
   })();
 
   const setFocused = useCallback((v: boolean) => dispatch({ type: "SET_FOCUSED", value: v }), []);
