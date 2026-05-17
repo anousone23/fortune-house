@@ -47,6 +47,11 @@ export default function HangingBundle({ position, layer = "front" }: Props) {
       ? "/scene/herb-bundle-left.png"
       : "/scene/herb-bundle-right.png";
 
+  const leafSrc =
+    position === "left"
+      ? "/scene/bundle-leaf-left.png"
+      : "/scene/bundle-leaf-right.png";
+
   const wrapperRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<"idle" | "active">("idle");
   const controls = useAnimationControls();
@@ -149,7 +154,7 @@ export default function HangingBundle({ position, layer = "front" }: Props) {
                   onAnimationEnd={() => removeLeaf(l.id)}
                 >
                   <Image
-                    src="/scene/leaf.png"
+                    src={leafSrc}
                     alt=""
                     width={24}
                     height={24}
