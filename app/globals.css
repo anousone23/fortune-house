@@ -343,7 +343,7 @@ body {
 .candelabra {
   position: absolute;
   top: calc(var(--orb-y) - clamp(10px, 1.2vw, 20px));
-  width: clamp(70px, 9vw, 140px);
+  width: clamp(77px, 9.9vw, 154px);
   aspect-ratio: 2 / 3;
   z-index: 1;
 }
