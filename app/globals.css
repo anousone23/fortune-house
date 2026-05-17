@@ -491,7 +491,7 @@ body {
 
 .shelf-bottle {
   position: absolute;
-  top: clamp(96px, 18vh, 220px);
+  top: clamp(160px, 26vh, 320px);
   width: clamp(38px, 3.8vw, 70px);
   aspect-ratio: 1 / 2;
   z-index: 0;
