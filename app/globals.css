@@ -489,6 +489,81 @@ body {
   }
 }
 
+.shelf-bottle {
+  position: absolute;
+  top: clamp(96px, 18vh, 220px);
+  width: clamp(50px, 5vw, 90px);
+  aspect-ratio: 1 / 2;
+  z-index: 1;
+  transform-origin: 50% 100%;
+  animation: shelf-bottle-wobble 3.5s ease-in-out infinite;
+  animation-delay: var(--bottle-phase, 0s);
+  will-change: transform;
+}
+
+.shelf-bottle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0.85) saturate(0.95);
+}
+
+.shelf-bottle::before {
+  content: "";
+  position: absolute;
+  inset: 30% -10% 10% -10%;
+  background: radial-gradient(circle, var(--bottle-glow, rgba(255,255,255,0.5)), transparent 70%);
+  filter: blur(8px);
+  z-index: -1;
+  animation: shelf-bottle-pulse 3.5s ease-in-out infinite;
+  animation-delay: var(--bottle-phase, 0s);
+  pointer-events: none;
+}
+
+.shelf-bottle[data-side="left"]  { left:  calc(8vw + var(--bottle-x, 0px)); }
+.shelf-bottle[data-side="right"] { right: calc(8vw + var(--bottle-x, 0px)); }
+
+.shelf-bottle[data-slot="0"] { --bottle-x: 0px;   --bottle-phase: 0s;    }
+.shelf-bottle[data-slot="1"] { --bottle-x: 50px;  --bottle-phase: -0.58s; }
+.shelf-bottle[data-slot="2"] { --bottle-x: 100px; --bottle-phase: -1.16s; }
+.shelf-bottle[data-slot="3"] { --bottle-x: 150px; --bottle-phase: -1.74s; }
+.shelf-bottle[data-slot="4"] { --bottle-x: 200px; --bottle-phase: -2.32s; }
+.shelf-bottle[data-slot="5"] { --bottle-x: 250px; --bottle-phase: -2.90s; }
+
+.shelf-bottle[data-side="right"][data-slot="0"] { --bottle-phase: -1.75s; }
+.shelf-bottle[data-side="right"][data-slot="1"] { --bottle-phase: -2.33s; }
+.shelf-bottle[data-side="right"][data-slot="2"] { --bottle-phase: -2.91s; }
+.shelf-bottle[data-side="right"][data-slot="3"] { --bottle-phase: -3.49s; }
+.shelf-bottle[data-side="right"][data-slot="4"] { --bottle-phase: -0.57s; }
+.shelf-bottle[data-side="right"][data-slot="5"] { --bottle-phase: -1.15s; }
+
+.shelf-bottle[data-variant="1"] { --bottle-glow: rgba(80, 200, 120, 0.75); }
+.shelf-bottle[data-variant="2"] { --bottle-glow: rgba(210, 50, 70, 0.75); }
+.shelf-bottle[data-variant="3"] { --bottle-glow: rgba(230, 170, 70, 0.75); }
+.shelf-bottle[data-variant="4"] { --bottle-glow: rgba(80, 130, 220, 0.7); }
+.shelf-bottle[data-variant="5"] { --bottle-glow: rgba(60, 60, 80, 0.6); }
+.shelf-bottle[data-variant="6"] { --bottle-glow: rgba(220, 210, 195, 0.55); }
+
+@keyframes shelf-bottle-wobble {
+  0%, 100% { transform: rotate(-2deg); }
+  50%      { transform: rotate( 2deg); }
+}
+
+@keyframes shelf-bottle-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.8; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shelf-bottle,
+  .shelf-bottle::before {
+    animation: none;
+  }
+  .shelf-bottle::before {
+    opacity: 0.3;
+  }
+}
+
 /* === Atmospheric falling effects === */
 
 /* MagicSparks — small glowing particles drifting down through the orb area */
