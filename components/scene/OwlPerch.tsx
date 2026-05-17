@@ -10,7 +10,7 @@ import Image from "next/image";
 // - PERCH_Y_OFFSET shifts vertical center down a bit so the base lands lower
 // - PERCH_SCALE shrinks the perch visually around its center; 0.7 = 30% smaller
 const PERCH_X_OFFSET = "39%";
-const PERCH_Y_OFFSET = "10%";
+const PERCH_Y_OFFSET = "22%";
 const PERCH_SCALE = 0.7;
 
 export default function OwlPerch() {
@@ -25,6 +25,10 @@ export default function OwlPerch() {
         width: "max(100vw, calc(100dvh * var(--bg-aspect)))",
         height: "max(100dvh, calc(100vw / var(--bg-aspect)))",
         transform: `translate(-50%, -50%) translate(${PERCH_X_OFFSET}, ${PERCH_Y_OFFSET}) scale(${PERCH_SCALE})`,
+        // Blend the perch into the dark right corner of the scene. Strong
+        // brightness drop + warm cast to match the shadowed wood/wall tones.
+        filter:
+          "brightness(0.45) saturate(0.85) contrast(1.05) drop-shadow(4px 5px 10px rgba(0, 0, 0, 0.7))",
         zIndex: 1,
       }}
     >

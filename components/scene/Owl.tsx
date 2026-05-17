@@ -12,7 +12,7 @@ import Image from "next/image";
 // Currently anchored to the top of the wooden perch added via OwlPerch.tsx —
 // tune in the browser if it doesn't land squarely on the perch's flat top.
 const OWL_X_PCT = "89%";
-const OWL_Y_PCT = "35%";
+const OWL_Y_PCT = "47%";
 const OWL_WIDTH = 140;
 const OWL_HEIGHT = 160;
 const HEAD_TOP = "5%";
@@ -44,7 +44,7 @@ export default function Owl() {
           transform: "translate(-50%, -100%)",
           rotate: "-6deg",
           filter:
-            "brightness(0.82) sepia(0.18) hue-rotate(-8deg) contrast(1.05) drop-shadow(2px 3px 6px rgba(0, 0, 0, 0.6))",
+            "brightness(0.5) sepia(0.22) hue-rotate(-8deg) contrast(1.05) drop-shadow(3px 4px 8px rgba(0, 0, 0, 0.75))",
         }}
       >
         {/* Inner wrapper flips the visual horizontally so the owl faces left. */}
