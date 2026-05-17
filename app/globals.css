@@ -900,7 +900,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  animation: leaf-fall var(--leaf-duration, 18s) ease-in-out forwards;
+  animation: leaf-fall var(--leaf-duration, 18s) linear forwards;
   will-change: transform, opacity;
 }
 
