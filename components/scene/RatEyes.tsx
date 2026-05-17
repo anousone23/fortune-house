@@ -14,7 +14,7 @@ type Side = "left" | "right";
 // Wrapper top-left positions for each side. The wrapper is 32x32; eyes inside
 // are at x: 8 and 20, y: 13. Right side is the mirror of the left.
 const POSITIONS: Record<Side, { left: string; top: string }> = {
-  left:  { left: "calc(9vw - 8px)",   top: "calc(94vh - 13px)" },
+  left: { left: "calc(9vw - 8px)", top: "calc(94vh - 13px)" },
   right: { left: "calc(91vw - 24px)", top: "calc(94vh - 13px)" },
 };
 
@@ -45,11 +45,21 @@ export default function RatEyes() {
     // Wait for React to commit the new position before reappearing
     await new Promise((r) => setTimeout(r, 80));
 
-    // Instant reappear at the new side, scale back to idle
+    // Reappear at the new side, but darkened — the rat just opened its eyes
+    // in shadow. Scale snaps back to idle, opacity is instant.
     await controls.start({
       opacity: 1,
       scale: 1,
+      filter: "brightness(0.3) saturate(0.6)",
       transition: { duration: 0 },
+    });
+
+    // Glow up to the original red over ~700ms (instant under reduced-motion).
+    await controls.start({
+      filter: "brightness(1) saturate(1)",
+      transition: reduce
+        ? { duration: 0 }
+        : { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
     });
 
     phaseRef.current = "idle";
@@ -79,11 +89,19 @@ export default function RatEyes() {
       >
         <span
           className="rat-eye"
-          style={{ left: 8, top: 13, animation: "eye-blink 4s linear infinite 0s" }}
+          style={{
+            left: 8,
+            top: 13,
+            animation: "eye-blink 4s linear infinite 0s",
+          }}
         />
         <span
           className="rat-eye"
-          style={{ left: 20, top: 13, animation: "eye-blink 4.7s linear infinite 1.2s" }}
+          style={{
+            left: 20,
+            top: 13,
+            animation: "eye-blink 4.7s linear infinite 1.2s",
+          }}
         />
       </motion.div>
     </div>
