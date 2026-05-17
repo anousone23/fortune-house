@@ -368,6 +368,12 @@ body {
   }
 }
 
+.scene-vignette.is-ritual {
+  animation: none;
+  --vignette-inner: 40%;
+  transition: --vignette-inner 0.4s ease-out;
+}
+
 /* CandleFlame — wrapper dimensions; the video element gets the warm bloom filter
    that sells the flame as a real light source. */
 .candle-flame {
