@@ -30,7 +30,7 @@ function makeLeaf(viewportWidth: number, slow: boolean): Leaf {
       -sign * (60 + Math.random() * 120),
       sign * (60 + Math.random() * 120),
     ],
-    duration: slow ? baseDuration * 2 : baseDuration,
+    duration: slow ? baseDuration * 3.5 : baseDuration,
   };
 }
 
@@ -54,6 +54,16 @@ export default function DriedLeaves() {
       if (timerId) clearTimeout(timerId);
     };
   }, [reduce]);
+
+  // Spawn an immediate "slow" leaf when the textarea is focused, so the
+  // slowdown is visible without waiting for the next regular spawn (10–18s).
+  useEffect(() => {
+    if (reduce || !state.focused) return;
+    const id = setTimeout(() => {
+      setLeaves((prev) => [...prev, makeLeaf(window.innerWidth, true)]);
+    }, 600);
+    return () => clearTimeout(id);
+  }, [state.focused, reduce]);
 
   return (
     <div

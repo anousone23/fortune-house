@@ -25,7 +25,7 @@ function makePetal(viewportWidth: number, slow: boolean): Petal {
       (Math.random() - 0.5) * 80,
     ],
     rotation: (Math.random() * 2 - 1) * 540,
-    duration: slow ? baseDuration * 2 : baseDuration,
+    duration: slow ? baseDuration * 3.5 : baseDuration,
   };
 }
 
@@ -49,6 +49,16 @@ export default function FallingPetals() {
       if (timerId) clearTimeout(timerId);
     };
   }, [reduce]);
+
+  // Spawn an immediate "slow" petal when the textarea is focused, so the
+  // slowdown is visible without waiting for the next regular spawn (6–10s).
+  useEffect(() => {
+    if (reduce || !state.focused) return;
+    const id = setTimeout(() => {
+      setPetals((prev) => [...prev, makePetal(window.innerWidth, true)]);
+    }, 400);
+    return () => clearTimeout(id);
+  }, [state.focused, reduce]);
 
   return (
     <div
