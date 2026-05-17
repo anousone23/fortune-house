@@ -60,7 +60,8 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
           style={{
             position: "absolute",
             left: -22,
-            bottom: -36,
+            top: -36,
+            transform: "scaleY(-1)",
             display: "inline-flex",
             filter: "drop-shadow(0 0 1px rgba(230,212,163,0.5))",
           }}
