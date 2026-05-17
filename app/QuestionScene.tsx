@@ -8,6 +8,7 @@ import FallingPetals from "@/components/scene/FallingPetals";
 import DriedLeaves from "@/components/scene/DriedLeaves";
 import RatEyes from "@/components/scene/RatEyes";
 import Owl from "@/components/scene/Owl";
+import HangingBundle from "@/components/scene/HangingBundle";
 import OwlPerch from "@/components/scene/OwlPerch";
 import QuestionForm from "./QuestionForm";
 import { SceneStateProvider } from "./SceneStateContext";
@@ -24,6 +25,8 @@ export default function QuestionScene() {
         }}
       >
         <BackgroundScene />
+        <HangingBundle position="left" />
+        <HangingBundle position="right" />
         <OwlPerch />
         <Candelabra position="left" />
         <Candelabra position="right" />
