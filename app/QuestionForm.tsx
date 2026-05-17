@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import OrnateTextarea from "@/components/ui/OrnateTextarea";
 import TopicChip from "@/components/ui/TopicChip";
 import OrnateButton from "@/components/ui/OrnateButton";
@@ -11,7 +11,7 @@ import { useSceneState } from "./SceneStateContext";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function QuestionForm() {
-  const { state, setSelectedChip, setHasText } = useSceneState();
+  const { state, setSelectedChip, setHasText, startRitual } = useSceneState();
   const [question, setQuestion] = useState("");
 
   const reduce = useReducedMotion();
@@ -80,26 +80,33 @@ export default function QuestionForm() {
     }
   };
 
-  const handleStart = () => console.log({ question });
+  const handleStart = () => {
+    startRitual();
+    console.log({ question });
+  };
   const handleSkip = () => console.log("skipped");
 
   return (
     <>
-      <div
+      <motion.div
         className="w-full"
         style={{
           maxWidth: 720,
           animation: "fade-up 600ms ease-out 240ms both",
         }}
+        animate={{ opacity: state.ritualActive ? 0 : 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
         <OrnateTextarea value={question} onChange={handleChange} />
-      </div>
+      </motion.div>
 
-      <div
+      <motion.div
         role="group"
         aria-label="หัวข้อคำถามแนะนำ"
         className="chip-row mt-6 flex w-full max-w-[820px] gap-2 sm:gap-3"
         style={{ animation: "fade-up 600ms ease-out 320ms both" }}
+        animate={{ opacity: state.ritualActive ? 0 : 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
         {SUGGESTIONS.map((s) => (
           <TopicChip
@@ -114,19 +121,21 @@ export default function QuestionForm() {
             }}
           />
         ))}
-      </div>
+      </motion.div>
 
-      <div
+      <motion.div
         className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4"
         style={{ animation: "fade-up 600ms ease-out 400ms both" }}
+        animate={{ opacity: state.ritualActive ? 0 : 1 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        <OrnateButton variant="primary" onClick={handleStart}>
+        <OrnateButton variant="primary" onClick={handleStart} loading={state.ritualActive}>
           เริ่มเลือกไพ่
         </OrnateButton>
         <OrnateButton variant="ghost" onClick={handleSkip}>
           ข้าม
         </OrnateButton>
-      </div>
+      </motion.div>
 
       <AnimatePresence>
         {activeWisp && (
