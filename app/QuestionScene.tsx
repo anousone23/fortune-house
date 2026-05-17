@@ -10,6 +10,7 @@ import RatEyes from "@/components/scene/RatEyes";
 import Owl from "@/components/scene/Owl";
 import HangingBundle from "@/components/scene/HangingBundle";
 import OwlPerch from "@/components/scene/OwlPerch";
+import ShelfBottle from "@/components/scene/ShelfBottle";
 import QuestionForm from "./QuestionForm";
 import { SceneStateProvider } from "./SceneStateContext";
 
@@ -30,6 +31,19 @@ export default function QuestionScene() {
         <HangingBundle position="left" />
         <HangingBundle position="right" />
         <OwlPerch />
+        {(["left", "right"] as const).map((side) => {
+          const arrangement = side === "left"
+            ? ([1, 4, 2, 6, 3, 5] as const)
+            : ([3, 5, 6, 1, 4, 2] as const);
+          return arrangement.map((variant, slot) => (
+            <ShelfBottle
+              key={`${side}-${slot}`}
+              side={side}
+              variant={variant}
+              slot={slot as 0 | 1 | 2 | 3 | 4 | 5}
+            />
+          ));
+        })}
         <Candelabra position="left" />
         <Candelabra position="right" />
         <Vignette />
