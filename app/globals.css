@@ -482,6 +482,12 @@ body {
   }
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .bundle-leaf {
+    display: none;
+  }
+}
+
 /* === Atmospheric falling effects === */
 
 /* MagicSparks — small glowing particles drifting down through the orb area */
