@@ -23,10 +23,11 @@ export default function TopicChip({ id, label, selected, onClick, chipRef }: Top
       onMouseLeave={() => setHoveredChip(null)}
       onFocus={() => setHoveredChip(id)}
       onBlur={() => setHoveredChip(null)}
-      className="topic-chip inline-flex items-center justify-center rounded-full"
+      className="topic-chip inline-flex items-center justify-center"
       style={{
         minHeight: 44,
         padding: "8px 18px",
+        borderRadius: "var(--radius-sm)",
         background: selected ? "var(--gold-primary)" : "rgba(26, 5, 8, 0.65)",
         color: selected ? "var(--ink-velvet-deep)" : "var(--text-primary)",
         border: "1px solid var(--gold-stroke)",

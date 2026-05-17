@@ -25,7 +25,7 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
         aria-hidden="true"
         className="pointer-events-none absolute inset-0"
         style={{
-          borderRadius: 999,
+          borderRadius: "var(--radius-sm)",
           boxShadow: "0 0 24px 4px var(--gold-primary)",
         }}
         initial={false}
@@ -42,7 +42,7 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
           minHeight: 52,
           padding: "10px 56px",
           minWidth: 220,
-          borderRadius: 999,
+          borderRadius: "var(--radius-sm)",
           border: "1px solid var(--gold-stroke)",
           background: isPrimary
             ? "linear-gradient(180deg, var(--cta-green-top), var(--cta-green-bottom))"
@@ -58,8 +58,10 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
         <span
           aria-hidden="true"
           style={{
-            position: "absolute", left: -10, top: "50%",
-            transform: "translateY(-50%)", display: "inline-flex",
+            position: "absolute",
+            left: -22,
+            bottom: -36,
+            display: "inline-flex",
             filter: "drop-shadow(0 0 1px rgba(230,212,163,0.5))",
           }}
         >
@@ -69,8 +71,11 @@ export default function OrnateButton({ variant, onClick, loading = false, childr
         <span
           aria-hidden="true"
           style={{
-            position: "absolute", right: -10, top: "50%",
-            transform: "translateY(-50%) scaleX(-1)", display: "inline-flex",
+            position: "absolute",
+            right: -22,
+            bottom: -36,
+            transform: "scaleX(-1)",
+            display: "inline-flex",
             filter: "drop-shadow(0 0 1px rgba(230,212,163,0.5))",
           }}
         >
