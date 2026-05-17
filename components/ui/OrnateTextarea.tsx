@@ -33,28 +33,21 @@ export default function OrnateTextarea({ value, onChange }: OrnateTextareaProps)
   const spawnSparks = () => {
     if (reduce) return;
     const now = Date.now();
-    if (now - lastSpawnRef.current < 60) return; // debounce 60ms
+    if (now - lastSpawnRef.current < 40) return; // debounce 40ms
     lastSpawnRef.current = now;
-    const newSparks: Spark[] = [
-      {
-        id: nextSparkId++,
-        cornerX: Math.random() < 0.5 ? 0 : 1,
-        cornerY: Math.random() < 0.5 ? 0 : 1,
-      },
-    ];
-    if (Math.random() < 0.4) {
-      newSparks.push({
-        id: nextSparkId++,
-        cornerX: Math.random() < 0.5 ? 0 : 1,
-        cornerY: Math.random() < 0.5 ? 0 : 1,
-      });
-    }
+    // 3 guaranteed sparks per keystroke, with up to 2 extra (so 3–5 per stroke).
+    const count = 3 + (Math.random() < 0.5 ? 1 : 0) + (Math.random() < 0.3 ? 1 : 0);
+    const newSparks: Spark[] = Array.from({ length: count }, () => ({
+      id: nextSparkId++,
+      cornerX: Math.random() < 0.5 ? 0 : 1,
+      cornerY: Math.random() < 0.5 ? 0 : 1,
+    }));
     setSparks((prev) => [...prev, ...newSparks]);
-    // remove after 600ms (animation 500ms + buffer)
+    // remove after 900ms (animation 800ms + buffer)
     newSparks.forEach((s) => {
       setTimeout(() => {
         setSparks((prev) => prev.filter((p) => p.id !== s.id));
-      }, 600);
+      }, 900);
     });
   };
 
