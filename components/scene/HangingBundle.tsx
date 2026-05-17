@@ -49,8 +49,8 @@ export default function HangingBundle({ position, layer = "front" }: Props) {
 
   const leafSrc =
     position === "left"
-      ? "/scene/leaf-left.png"
-      : "/scene/leaf-right.png";
+      ? "/scene/leaf-right.png"
+      : "/scene/leaf-left.png";
 
   const wrapperRef = useRef<HTMLDivElement>(null);
   const phaseRef = useRef<"idle" | "active">("idle");
