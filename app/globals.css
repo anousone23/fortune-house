@@ -527,7 +527,7 @@ body {
   height: 100%;
   object-fit: contain;
   object-position: center bottom;
-  filter: brightness(0.4) saturate(0.8);
+  filter: brightness(0.35) saturate(0.85);
 }
 
 .shelf-bottle::before {
@@ -616,6 +616,10 @@ body {
 }
 .shelf-bottle[data-variant="6"] {
   --bottle-glow: rgba(220, 210, 195, 0.55);
+}
+
+.shelf-bottle[data-variant="2"] img {
+  transform: translateY(-4%);
 }
 
 .shelf-bottle[data-variant="3"] img {
