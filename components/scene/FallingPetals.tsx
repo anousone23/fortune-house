@@ -14,8 +14,7 @@ interface Petal {
 }
 
 let nextPetalId = 1;
-function makePetal(viewportWidth: number, slow: boolean): Petal {
-  const baseDuration = 7 + Math.random() * 4;
+function makePetal(viewportWidth: number): Petal {
   return {
     id: nextPetalId++,
     startX: Math.random() * viewportWidth,
@@ -25,23 +24,24 @@ function makePetal(viewportWidth: number, slow: boolean): Petal {
       (Math.random() - 0.5) * 80,
     ],
     rotation: (Math.random() * 2 - 1) * 540,
-    duration: slow ? baseDuration * 3.5 : baseDuration,
+    duration: 7 + Math.random() * 4,
   };
 }
+
+// Playback rate for the CSS animation while the textarea is focused.
+const SLOW_RATE = 0.3;
 
 export default function FallingPetals() {
   const reduce = useReducedMotion();
   const [petals, setPetals] = useState<Petal[]>([]);
   const { state } = useSceneState();
-  const slow = state.focused;
-  const slowRef = useRef(slow);
-  slowRef.current = slow;
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (reduce) return;
     let timerId: ReturnType<typeof setTimeout> | undefined;
     const spawn = () => {
-      setPetals((prev) => [...prev, makePetal(window.innerWidth, slowRef.current)]);
+      setPetals((prev) => [...prev, makePetal(window.innerWidth)]);
       timerId = setTimeout(spawn, 6000 + Math.random() * 4000);
     };
     timerId = setTimeout(spawn, 1000);
@@ -50,18 +50,27 @@ export default function FallingPetals() {
     };
   }, [reduce]);
 
-  // Spawn an immediate "slow" petal when the textarea is focused, so the
-  // slowdown is visible without waiting for the next regular spawn (6–10s).
+  // Apply the current playbackRate to every running petal animation.
   useEffect(() => {
-    if (reduce || !state.focused) return;
-    const id = setTimeout(() => {
-      setPetals((prev) => [...prev, makePetal(window.innerWidth, true)]);
-    }, 400);
-    return () => clearTimeout(id);
-  }, [state.focused, reduce]);
+    if (reduce) return;
+    const container = containerRef.current;
+    if (!container) return;
+    const rate = state.focused ? SLOW_RATE : 1;
+    const apply = () => {
+      container.querySelectorAll(".petal-falling").forEach((el) => {
+        el.getAnimations().forEach((a) => {
+          a.playbackRate = rate;
+        });
+      });
+    };
+    apply();
+    const raf = requestAnimationFrame(apply);
+    return () => cancelAnimationFrame(raf);
+  }, [state.focused, petals.length, reduce]);
 
   return (
     <div
+      ref={containerRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
       style={{ zIndex: 4 }}

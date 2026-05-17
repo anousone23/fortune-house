@@ -14,9 +14,8 @@ interface Leaf {
 }
 
 let nextLeafId = 1;
-function makeLeaf(viewportWidth: number, slow: boolean): Leaf {
+function makeLeaf(viewportWidth: number): Leaf {
   const sign = Math.random() < 0.5 ? -1 : 1;
-  const baseDuration = 15 + Math.random() * 6;
   return {
     id: nextLeafId++,
     startX: Math.random() * viewportWidth,
@@ -30,23 +29,25 @@ function makeLeaf(viewportWidth: number, slow: boolean): Leaf {
       -sign * (60 + Math.random() * 120),
       sign * (60 + Math.random() * 120),
     ],
-    duration: slow ? baseDuration * 3.5 : baseDuration,
+    duration: 15 + Math.random() * 6,
   };
 }
+
+// Playback rate for the CSS animation while the textarea is focused.
+// 1 = real-time, 0.3 = roughly 1/3 the normal falling speed.
+const SLOW_RATE = 0.3;
 
 export default function DriedLeaves() {
   const reduce = useReducedMotion();
   const [leaves, setLeaves] = useState<Leaf[]>([]);
   const { state } = useSceneState();
-  const slow = state.focused;
-  const slowRef = useRef(slow);
-  slowRef.current = slow;
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (reduce) return;
     let timerId: ReturnType<typeof setTimeout> | undefined;
     const spawn = () => {
-      setLeaves((prev) => [...prev, makeLeaf(window.innerWidth, slowRef.current)]);
+      setLeaves((prev) => [...prev, makeLeaf(window.innerWidth)]);
       timerId = setTimeout(spawn, 10000 + Math.random() * 8000);
     };
     timerId = setTimeout(spawn, 2000);
@@ -55,18 +56,31 @@ export default function DriedLeaves() {
     };
   }, [reduce]);
 
-  // Spawn an immediate "slow" leaf when the textarea is focused, so the
-  // slowdown is visible without waiting for the next regular spawn (10–18s).
+  // Apply the current playbackRate to every running leaf animation.
+  // Re-runs when focus toggles (slows/speeds existing leaves smoothly
+  // mid-fall) and when leaves.length changes (so newly mounted leaves
+  // start at the current speed).
   useEffect(() => {
-    if (reduce || !state.focused) return;
-    const id = setTimeout(() => {
-      setLeaves((prev) => [...prev, makeLeaf(window.innerWidth, true)]);
-    }, 600);
-    return () => clearTimeout(id);
-  }, [state.focused, reduce]);
+    if (reduce) return;
+    const container = containerRef.current;
+    if (!container) return;
+    const rate = state.focused ? SLOW_RATE : 1;
+    const apply = () => {
+      container.querySelectorAll(".leaf-falling").forEach((el) => {
+        el.getAnimations().forEach((a) => {
+          a.playbackRate = rate;
+        });
+      });
+    };
+    apply();
+    // Some browsers register CSS animations on the next frame after mount.
+    const raf = requestAnimationFrame(apply);
+    return () => cancelAnimationFrame(raf);
+  }, [state.focused, leaves.length, reduce]);
 
   return (
     <div
+      ref={containerRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
       style={{ zIndex: 4 }}
