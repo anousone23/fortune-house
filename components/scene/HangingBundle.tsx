@@ -83,7 +83,7 @@ export default function HangingBundle({ position, layer = "front" }: Props) {
       await controls.start({
         rotate: [0, -6, 5, -5, 4, -3, 2, 0],
         transition: {
-          duration: 0.44,
+          duration: 0.7,
           ease: "easeInOut",
           times: [0, 0.14, 0.28, 0.42, 0.56, 0.7, 0.84, 1],
         },
