@@ -13,7 +13,7 @@ interface CandleFlameProps {
 // Small range around 1.0 so each candle plays at a slightly different speed
 // without distorting the natural flicker rhythm.
 const PLAYBACK_RATES = [0.88, 1.05, 0.95, 1.08, 0.92, 1.0];
-const SLOW_RATE = 0.3;
+const SLOW_RATE = 0.55;
 
 export default function CandleFlame({ style, seed = 0 }: CandleFlameProps) {
   const reduce = useReducedMotion();
