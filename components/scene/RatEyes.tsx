@@ -2,8 +2,10 @@
 
 // Two red glowing dots — a rat hiding in the dark, peeking from one corner.
 // On hover or click, the eyes grow ("startled"), then instantly disappear and
-// reappear on the opposite side of the scene. Side persists for the rest of
-// the session — every interaction just toggles between left and right.
+// reappear at a slightly different position on the same shelf. Position
+// persists for the rest of the session — every interaction toggles between
+// the two spots. On reappear, the eyes start darkened and glow back to red
+// via a CSS transition.
 
 import { useRef, useState } from "react";
 import { motion, useAnimationControls } from "framer-motion";
@@ -11,17 +13,19 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 type Side = "left" | "right";
 
-// Wrapper top-left positions for each side. The wrapper is 32x32; eyes inside
-// are at x: 8 and 20, y: 13. Right side is the mirror of the left.
+// Wrapper top-left positions. Both spots are on the same shelf (same Y);
+// "right" is just ~60px further right than "left" — the rat scoots a bit
+// along the floor, doesn't cross the room.
 const POSITIONS: Record<Side, { left: string; top: string }> = {
-  left: { left: "calc(9vw - 8px)", top: "calc(94vh - 13px)" },
-  right: { left: "calc(91vw - 24px)", top: "calc(94vh - 13px)" },
+  left:  { left: "calc(9vw - 8px)",  top: "calc(94vh - 13px)" },
+  right: { left: "calc(9vw + 52px)", top: "calc(94vh - 13px)" },
 };
 
 export default function RatEyes() {
   const controls = useAnimationControls();
   const phaseRef = useRef<"idle" | "active">("idle");
   const [side, setSide] = useState<Side>("left");
+  const [dim, setDim] = useState(false);
   const reduce = useReducedMotion();
 
   const handleStartle = async () => {
@@ -39,33 +43,39 @@ export default function RatEyes() {
     // Instant disappear (no fade)
     await controls.start({ opacity: 0, transition: { duration: 0 } });
 
-    // Teleport to the opposite side
+    // While invisible, teleport AND mark the eyes as dim. CSS class swaps
+    // before the user can see anything, so the transition below isn't
+    // perceived as a flash.
     setSide((prev) => (prev === "left" ? "right" : "left"));
+    if (!reduce) setDim(true);
 
-    // Wait for React to commit the new position before reappearing
+    // Wait for React to commit the new position + dim class
     await new Promise((r) => setTimeout(r, 80));
 
-    // Reappear at the new side, but darkened — the rat just opened its eyes
-    // in shadow. Scale snaps back to idle, opacity is instant.
+    // Reappear at the new spot, scale back to idle
     await controls.start({
       opacity: 1,
       scale: 1,
-      filter: "brightness(0.3) saturate(0.6)",
       transition: { duration: 0 },
     });
 
-    // Glow up to the original red over ~700ms (instant under reduced-motion).
-    await controls.start({
-      filter: "brightness(1) saturate(1)",
-      transition: reduce
-        ? { duration: 0 }
-        : { duration: 0.7, ease: [0.16, 1, 0.3, 1] },
-    });
+    if (!reduce) {
+      // Two RAFs guarantee the dim state has been painted before we ask the
+      // browser to transition away from it. Without this the browser may
+      // collapse the class add+remove into a single layout pass and skip
+      // the transition entirely.
+      await new Promise((r) => requestAnimationFrame(() => r(null)));
+      await new Promise((r) => requestAnimationFrame(() => r(null)));
+      setDim(false);
+      // Let the 700ms CSS transition complete before unlocking re-trigger
+      await new Promise((r) => setTimeout(r, 750));
+    }
 
     phaseRef.current = "idle";
   };
 
   const pos = POSITIONS[side];
+  const eyeClass = dim ? "rat-eye is-dark" : "rat-eye";
 
   return (
     <div
@@ -88,7 +98,7 @@ export default function RatEyes() {
         }}
       >
         <span
-          className="rat-eye"
+          className={eyeClass}
           style={{
             left: 8,
             top: 13,
@@ -96,7 +106,7 @@ export default function RatEyes() {
           }}
         />
         <span
-          className="rat-eye"
+          className={eyeClass}
           style={{
             left: 20,
             top: 13,
