@@ -1,63 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState } from "react";
+import { motion } from "framer-motion";
 import OrnateTextarea from "@/components/ui/OrnateTextarea";
 import TopicChip from "@/components/ui/TopicChip";
 import OrnateButton from "@/components/ui/OrnateButton";
-import ChipWisp from "@/components/scene/ChipWisp";
 import { SUGGESTIONS } from "./suggestions";
 import { useSceneState } from "./SceneStateContext";
-import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 export default function QuestionForm() {
   const { state, setSelectedChip, setHasText, startRitual } = useSceneState();
   const [question, setQuestion] = useState("");
-
-  const reduce = useReducedMotion();
-  const chipRefs = useRef<Map<string, HTMLButtonElement | null>>(new Map());
-  const [activeWisp, setActiveWisp] = useState<{
-    id: string;
-    fromRect: { x: number; y: number };
-    toRect: { x: number; y: number };
-    themeColor: string;
-  } | null>(null);
-
-  useEffect(() => {
-    if (reduce) {
-      setActiveWisp(null);
-      return;
-    }
-    if (!state.hoveredChipId) {
-      setActiveWisp(null);
-      return;
-    }
-    const chip = chipRefs.current.get(state.hoveredChipId);
-    if (!chip) return;
-    const chipRect = chip.getBoundingClientRect();
-    const orbEl = document.querySelector(".crystal-ball") as HTMLElement | null;
-    const orbRect = orbEl
-      ? orbEl.getBoundingClientRect()
-      : ({
-          left: window.innerWidth / 2,
-          top: window.innerHeight / 2,
-          width: 0,
-          height: 0,
-        } as DOMRect);
-    const suggestion = SUGGESTIONS.find((s) => s.id === state.hoveredChipId);
-    setActiveWisp({
-      id: `${state.hoveredChipId}-${Date.now()}`,
-      fromRect: {
-        x: chipRect.left + chipRect.width / 2 - 6,
-        y: chipRect.top + chipRect.height / 2 - 6,
-      },
-      toRect: {
-        x: orbRect.left + orbRect.width / 2 - 6,
-        y: orbRect.top + orbRect.height / 2 - 6,
-      },
-      themeColor: suggestion?.themeColor ?? "#B26BFF",
-    });
-  }, [state.hoveredChipId, reduce]);
 
   const handleChip = (id: string, text: string) => {
     if (state.selectedChipId === id) {
@@ -115,10 +68,6 @@ export default function QuestionForm() {
             label={s.label}
             selected={state.selectedChipId === s.id}
             onClick={() => handleChip(s.id, s.text)}
-            chipRef={(el) => {
-              if (el) chipRefs.current.set(s.id, el);
-              else chipRefs.current.delete(s.id);
-            }}
           />
         ))}
       </motion.div>
@@ -136,17 +85,6 @@ export default function QuestionForm() {
           ข้าม
         </OrnateButton>
       </motion.div>
-
-      <AnimatePresence>
-        {activeWisp && (
-          <ChipWisp
-            key={activeWisp.id}
-            fromRect={activeWisp.fromRect}
-            toRect={activeWisp.toRect}
-            themeColor={activeWisp.themeColor}
-          />
-        )}
-      </AnimatePresence>
     </>
   );
 }
