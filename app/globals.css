@@ -265,6 +265,8 @@ body {
   );
   background-size: 200% 100%;
   background-position: -50% 0;
+  background-repeat: no-repeat;
+  clip-path: inset(0 round var(--radius-sm));
   pointer-events: none;
   opacity: 0;
   mix-blend-mode: screen;
