@@ -518,6 +518,7 @@ body {
   animation: shelf-bottle-pulse 3.5s ease-in-out infinite;
   animation-delay: var(--bottle-phase, 0s);
   pointer-events: none;
+  will-change: opacity;
 }
 
 .shelf-bottle[data-side="left"]  { left:  calc(8vw + var(--bottle-x, 0px)); }
