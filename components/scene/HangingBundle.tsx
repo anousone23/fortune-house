@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Image from "next/image";
 import { motion, useAnimationControls } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useSceneState } from "@/app/SceneStateContext";
 
 type Layer = "front" | "back";
 type Props = { position: "left" | "right"; layer?: Layer };
@@ -40,6 +41,7 @@ function makeLeaf(x: number, y: number): Leaf {
 }
 
 const LEAF_DELAYS_MS = [100, 180, 260, 340, 420];
+const SLOW_RATE = 0.3;
 
 export default function HangingBundle({ position, layer = "front" }: Props) {
   const src =
@@ -59,10 +61,26 @@ export default function HangingBundle({ position, layer = "front" }: Props) {
   const [isShaking, setIsShaking] = useState(false);
   const [leaves, setLeaves] = useState<Leaf[]>([]);
   const [mounted, setMounted] = useState(false);
+  const { state } = useSceneState();
 
   useEffect(() => setMounted(true), []);
 
   const interactive = layer === "front";
+
+  useEffect(() => {
+    if (!interactive || reduce) return;
+    const rate = state.focused ? SLOW_RATE : 1;
+    const apply = () => {
+      document.querySelectorAll(".bundle-leaf").forEach((el) => {
+        el.getAnimations().forEach((a) => {
+          a.playbackRate = rate;
+        });
+      });
+    };
+    apply();
+    const raf = requestAnimationFrame(apply);
+    return () => cancelAnimationFrame(raf);
+  }, [state.focused, leaves.length, reduce, interactive]);
 
   const handleHover = async () => {
     if (!interactive || reduce || phaseRef.current !== "idle") return;
