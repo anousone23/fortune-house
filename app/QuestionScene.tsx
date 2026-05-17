@@ -1,3 +1,4 @@
+import CursorGlow from "@/components/scene/CursorGlow";
 import BackgroundScene from "@/components/scene/BackgroundScene";
 import Vignette from "@/components/scene/Vignette";
 import CrystalBall from "@/components/scene/CrystalBall";
@@ -98,6 +99,7 @@ export default function QuestionScene() {
 
           <QuestionForm />
         </div>
+        <CursorGlow />
       </main>
     </SceneStateProvider>
   );
