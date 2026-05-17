@@ -371,7 +371,7 @@ body {
   aspect-ratio: 2 / 3;
   z-index: 1;
   transform-origin: 50% 0%;
-  filter: brightness(0.6) saturate(0.85);
+  filter: brightness(0.4) saturate(0.7);
   animation: herb-sway 5.2s ease-in-out infinite;
   will-change: transform;
 }
