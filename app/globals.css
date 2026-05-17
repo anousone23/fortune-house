@@ -366,11 +366,12 @@ body {
 
 .hanging-bundle {
   position: absolute;
-  top: clamp(8px, 2vh, 24px);
+  top: clamp(-16px, -1vh, 0px);
   width: clamp(90px, 13vw, 200px);
   aspect-ratio: 2 / 3;
   z-index: 1;
   transform-origin: 50% 0%;
+  filter: brightness(0.6) saturate(0.85);
   animation: herb-sway 5.2s ease-in-out infinite;
   will-change: transform;
 }
