@@ -366,7 +366,7 @@ body {
 
 .hanging-bundle {
   position: absolute;
-  top: clamp(-32px, -2vh, -8px);
+  top: clamp(-48px, -3vh, -16px);
   width: clamp(90px, 13vw, 200px);
   aspect-ratio: 2 / 3;
   z-index: 1;
