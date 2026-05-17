@@ -8,6 +8,7 @@ import FallingPetals from "@/components/scene/FallingPetals";
 import DriedLeaves from "@/components/scene/DriedLeaves";
 import RatEyes from "@/components/scene/RatEyes";
 import Owl from "@/components/scene/Owl";
+import OwlPerch from "@/components/scene/OwlPerch";
 import QuestionForm from "./QuestionForm";
 import { SceneStateProvider } from "./SceneStateContext";
 
@@ -23,11 +24,12 @@ export default function QuestionScene() {
         }}
       >
         <BackgroundScene />
+        <OwlPerch />
         <Candelabra position="left" />
         <Candelabra position="right" />
         <Vignette />
         <CrystalBall />
-        <MagicSparks />
+        {/* <MagicSparks /> */}
         <FallingPetals />
         <DriedLeaves />
         <DustMotes />

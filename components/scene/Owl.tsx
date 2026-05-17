@@ -9,9 +9,10 @@ import Image from "next/image";
 
 // Owl position as a percentage of the BG IMAGE (not the viewport).
 // 0% = top/left of the image, 100% = bottom/right.
-// Tune in the browser until the owl sits on the shelf where you want.
-const OWL_X_PCT = "81%";
-const OWL_Y_PCT = "38%";
+// Currently anchored to the top of the wooden perch added via OwlPerch.tsx —
+// tune in the browser if it doesn't land squarely on the perch's flat top.
+const OWL_X_PCT = "89%";
+const OWL_Y_PCT = "57%";
 const OWL_WIDTH = 140;
 const OWL_HEIGHT = 160;
 const HEAD_TOP = "5%";
@@ -30,7 +31,7 @@ export default function Owl() {
         width: "max(100vw, calc(100dvh * var(--bg-aspect)))",
         height: "max(100dvh, calc(100vw / var(--bg-aspect)))",
         transform: "translate(-50%, -50%)",
-        zIndex: 2,
+        zIndex: 3,
       }}
     >
       <div
