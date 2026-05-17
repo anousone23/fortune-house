@@ -1,6 +1,5 @@
 import Image from "next/image";
 import OrbGeometry from "./OrbGeometry";
-import OrbGlow from "./OrbGlow";
 
 export default function CrystalBall() {
   return (
@@ -27,7 +26,6 @@ export default function CrystalBall() {
         />
       </picture>
       <OrbGeometry />
-      <OrbGlow />
     </div>
   );
 }
