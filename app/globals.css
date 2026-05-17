@@ -494,7 +494,7 @@ body {
   top: clamp(96px, 18vh, 220px);
   width: clamp(50px, 5vw, 90px);
   aspect-ratio: 1 / 2;
-  z-index: 1;
+  z-index: 0;
   transform-origin: 50% 100%;
   animation: shelf-bottle-wobble 3.5s ease-in-out infinite;
   animation-delay: var(--bottle-phase, 0s);
