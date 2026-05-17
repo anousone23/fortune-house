@@ -27,18 +27,17 @@ export default function KeystrokeSparks({ sparks }: KeystrokeSparksProps) {
               position: "absolute",
               left: `${s.cornerX * 100}%`,
               top: `${s.cornerY * 100}%`,
-              width: 10,
-              height: 10,
+              width: 6,
+              height: 6,
               borderRadius: "50%",
               background: "var(--gold-primary)",
-              boxShadow:
-                "0 0 14px 2px var(--gold-primary), 0 0 28px var(--gold-stroke)",
+              boxShadow: "0 0 8px var(--gold-primary)",
               transform: "translate(-50%, -50%)",
             }}
-            initial={{ opacity: 1, scale: 1.2, y: 0 }}
-            animate={{ opacity: 0, scale: 0.4, y: -32 }}
+            initial={{ opacity: 0.9, scale: 1, y: 0 }}
+            animate={{ opacity: 0, scale: 0.5, y: -18 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
           />
         ))}
       </AnimatePresence>
