@@ -12,7 +12,7 @@ import Image from "next/image";
 // Currently anchored to the top of the wooden perch added via OwlPerch.tsx —
 // tune in the browser if it doesn't land squarely on the perch's flat top.
 const OWL_X_PCT = "89%";
-const OWL_Y_PCT = "21%";
+const OWL_Y_PCT = "35%";
 const OWL_WIDTH = 140;
 const OWL_HEIGHT = 160;
 const HEAD_TOP = "5%";

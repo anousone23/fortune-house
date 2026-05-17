@@ -7,9 +7,11 @@ import Image from "next/image";
 //
 // Tuning constants:
 // - PERCH_X_OFFSET shifts the perch's horizontal center from 50% of bg → 89%
-// - PERCH_Y_OFFSET shifts vertical center from ~48% → 55% (base ≈ 88%, top ≈ 21%)
+// - PERCH_Y_OFFSET shifts vertical center down a bit so the base lands lower
+// - PERCH_SCALE shrinks the perch visually around its center; 0.7 = 30% smaller
 const PERCH_X_OFFSET = "39%";
-const PERCH_Y_OFFSET = "7%";
+const PERCH_Y_OFFSET = "10%";
+const PERCH_SCALE = 0.7;
 
 export default function OwlPerch() {
   return (
@@ -22,7 +24,7 @@ export default function OwlPerch() {
         top: "50%",
         width: "max(100vw, calc(100dvh * var(--bg-aspect)))",
         height: "max(100dvh, calc(100vw / var(--bg-aspect)))",
-        transform: `translate(-50%, -50%) translate(${PERCH_X_OFFSET}, ${PERCH_Y_OFFSET})`,
+        transform: `translate(-50%, -50%) translate(${PERCH_X_OFFSET}, ${PERCH_Y_OFFSET}) scale(${PERCH_SCALE})`,
         zIndex: 1,
       }}
     >
