@@ -19,7 +19,7 @@
 //
 // Phase ref + async controls pattern mirrors RatEyes.tsx.
 
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useAnimationControls } from "framer-motion";
 
@@ -32,6 +32,9 @@ const PEEK_ANGLE_DEG = -15;
 const OPEN_MS = 350;
 const HOLD_MS = 1200;
 const CLOSE_MS = 500;
+
+const RANDOM_MIN_MS = 20_000;
+const RANDOM_MAX_MS = 60_000;
 
 export default function CabinetPeek() {
   const controls = useAnimationControls();
@@ -54,6 +57,30 @@ export default function CabinetPeek() {
       phaseRef.current = "idle";
     }
   };
+
+  useEffect(() => {
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+
+    const schedule = () => {
+      const delay =
+        RANDOM_MIN_MS + Math.random() * (RANDOM_MAX_MS - RANDOM_MIN_MS);
+      timer = setTimeout(async () => {
+        if (cancelled) return;
+        await peek();
+        if (!cancelled) schedule();
+      }, delay);
+    };
+
+    schedule();
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
+    // peek is stable (closure over useAnimationControls + ref) — intentional
+    // empty deps so the effect runs once per mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
