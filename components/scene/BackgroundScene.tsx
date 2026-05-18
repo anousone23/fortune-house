@@ -4,12 +4,13 @@ export default function BackgroundScene() {
   return (
     <Image
       aria-hidden="true"
-      src="/scene/main-bg.png"
+      src="/scene/background.png"
       alt=""
       fill
       priority
       sizes="100vw"
-      style={{ objectFit: "cover", objectPosition: "center" }}
+      className="bg-scene-img"
+      style={{ objectFit: "cover" }}
     />
   );
 }

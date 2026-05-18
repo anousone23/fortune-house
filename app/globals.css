@@ -63,6 +63,10 @@ body {
   }
 }
 
+.bg-scene-img {
+  object-position: center;
+}
+
 .crystal-ball {
   width: clamp(135px, 18vw, 285px);
 }
