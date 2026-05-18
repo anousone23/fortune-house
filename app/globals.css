@@ -916,17 +916,17 @@ body {
    drift1 hits early (10%), drift2 holds through 90%, drift3 at the end. */
 @keyframes leaf-fall {
   0% {
-    transform: translateX(var(--leaf-start-x)) translateY(-100px) rotate(0deg);
+    transform: translateX(var(--leaf-start-x)) translateY(-12vh) rotate(0deg);
     opacity: 0;
   }
   10% {
     transform: translateX(calc(var(--leaf-start-x) + var(--leaf-d1)))
-      translateY(10vh) rotate(var(--leaf-r1));
+      translateY(2vh) rotate(var(--leaf-r1));
     opacity: 0.9;
   }
   90% {
     transform: translateX(calc(var(--leaf-start-x) + var(--leaf-d2)))
-      translateY(95vh) rotate(var(--leaf-r2));
+      translateY(98vh) rotate(var(--leaf-r2));
     opacity: 0.9;
   }
   100% {
@@ -945,17 +945,17 @@ body {
 
 @keyframes petal-fall {
   0% {
-    transform: translateX(var(--petal-start-x)) translateY(-100px) rotate(0deg);
+    transform: translateX(var(--petal-start-x)) translateY(-12vh) rotate(0deg);
     opacity: 0;
   }
   10% {
     transform: translateX(calc(var(--petal-start-x) + var(--petal-d1)))
-      translateY(10vh) rotate(calc(var(--petal-rot) * 0.1));
+      translateY(2vh) rotate(calc(var(--petal-rot) * 0.1));
     opacity: 0.9;
   }
   90% {
     transform: translateX(calc(var(--petal-start-x) + var(--petal-d2)))
-      translateY(95vh) rotate(calc(var(--petal-rot) * 0.9));
+      translateY(98vh) rotate(calc(var(--petal-rot) * 0.9));
     opacity: 0.9;
   }
   100% {
