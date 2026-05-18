@@ -102,6 +102,16 @@ body {
   .bg-scene-img {
     object-position: center 40%;
   }
+  .shelf-bottle,
+  .hanging-bundle,
+  .petal-falling,
+  .leaf-falling,
+  .rat-eye {
+    display: none;
+  }
+  .dust-mote:nth-child(n+7) {
+    display: none;
+  }
 }
 
 /* Mobile: chip row becomes a horizontal scroll-snap lane */
