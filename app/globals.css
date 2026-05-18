@@ -122,6 +122,12 @@ body {
     width: 21px;
     height: 27px;
   }
+  .rat-eye {
+    background: rgba(110, 12, 12, 0.9);
+    box-shadow:
+      0 0 5px 1px rgba(110, 15, 15, 0.4),
+      0 0 10px rgba(90, 5, 5, 0.2);
+  }
   main::after {
     content: "";
     position: absolute;
