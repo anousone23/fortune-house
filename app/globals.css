@@ -521,6 +521,16 @@ body {
   .candelabra {
     width: clamp(95px, 25vw, 120px);
   }
+  .candelabra[data-side="left"] {
+    left: calc(var(--orb-x) - clamp(135px, 35vw, 220px));
+  }
+  .candelabra[data-side="right"] {
+    left: calc(var(--orb-x) + clamp(135px, 35vw, 220px));
+  }
+  .candle-flame {
+    width: 21px;
+    height: 42px;
+  }
 }
 
 .hanging-bundle {
