@@ -46,7 +46,7 @@
 
 @media (max-width: 640px) {
   :root {
-    --orb-y: 60%;
+    --orb-y: 56%;
     --rat-x: calc(100vw - 120px);
     --rat-y: calc(100vh - 60px);
   }
