@@ -112,10 +112,7 @@ export default function QuestionScene() {
           </header>
 
           {/* Spacer where the orb sits behind the content */}
-          <div
-            style={{ height: "clamp(180px, 26vw, 320px)" }}
-            aria-hidden="true"
-          />
+          <div className="orb-spacer" aria-hidden="true" />
 
           <QuestionForm />
         </div>
