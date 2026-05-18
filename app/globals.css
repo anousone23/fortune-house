@@ -109,13 +109,19 @@ body {
   }
   .shelf-bottle,
   .hanging-bundle,
-  .petal-falling,
-  .leaf-falling,
   .rat-eye {
     display: none;
   }
   .dust-mote:nth-child(n+7) {
     display: none;
+  }
+  .leaf-falling img {
+    width: 24px;
+    height: 24px;
+  }
+  .petal-falling img {
+    width: 21px;
+    height: 27px;
   }
 }
 
