@@ -35,6 +35,9 @@ export default function QuestionForm() {
   const handleStart = () => {
     startRitual();
     console.log({ question });
+    setQuestion("");
+    setHasText(false);
+    setSelectedChip(null);
   };
   const handleSkip = () => console.log("skipped");
 

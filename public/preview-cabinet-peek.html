@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cabinet Peek — Motion Preview</title>
+<style>
+  :root {
+    /* Panel placement on bg.png — percentages of bg image's intrinsic size.
+       Final implementation will tune these by-eye to pixel-align with the
+       painted panel. Current values are a rough placement. */
+    --panel-left: 9.5%;
+    --panel-top: 44%;
+    --panel-width: 7%;
+    --panel-height: 26.5%;
+    --peek-angle: -15deg;
+    --peek-duration-open: 350ms;
+    --peek-hold: 1200ms;
+    --peek-duration-close: 500ms;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: #1a0508;
+    color: #f5e9d2;
+    font-family: -apple-system, system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  header {
+    padding: 16px 20px;
+    border-bottom: 1px solid #3a0c16;
+    display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  }
+  header h1 { font-size: 16px; margin: 0; font-weight: 600; }
+  header .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; align-items: center; }
+  button {
+    background: #3a0c16; color: #f5e9d2;
+    border: 1px solid #a8884a; border-radius: 6px;
+    padding: 6px 12px; cursor: pointer; font-size: 13px;
+  }
+  button:hover { background: #5b1fae; }
+  button.active { background: #5b1fae; border-color: #b26bff; }
+  .label { font-size: 11px; color: rgba(245,233,210,0.6); text-transform: uppercase; letter-spacing: 0.1em; }
+  input[type="range"] { vertical-align: middle; }
+
+  .stage {
+    position: relative;
+    width: 100%;
+    max-width: 1100px;
+    margin: 20px auto;
+    aspect-ratio: 2752 / 1536;
+    background: #000;
+    overflow: hidden;
+    perspective: 1200px;
+  }
+  .bg {
+    position: absolute; inset: 0;
+    background-image: url('/scene/background.png');
+    background-size: cover;
+    background-position: center;
+  }
+
+  /* Dark backdrop — sits behind the panel. When the panel rotates away,
+     this is what shows in the wedge. In production this will be sized to
+     the panel silhouette; here it's a simple arched rectangle. */
+  .panel-backdrop {
+    position: absolute;
+    left: var(--panel-left);
+    top: var(--panel-top);
+    width: var(--panel-width);
+    height: var(--panel-height);
+    background: #050203;
+    z-index: 2;
+  }
+
+  /* Panel overlay — placeholder art so you can see the rotation clearly.
+     In production this is a transparent PNG cropped from bg.png so its
+     pixels match the painted panel exactly.
+
+     Hinge: outer/left edge. rotateY(-15deg) swings inner edge toward room. */
+  .panel {
+    position: absolute;
+    left: var(--panel-left);
+    top: var(--panel-top);
+    width: var(--panel-width);
+    height: var(--panel-height);
+    background:
+      linear-gradient(180deg,
+        rgba(80, 50, 30, 0.95) 0%,
+        rgba(50, 25, 12, 0.95) 60%,
+        rgba(30, 14, 6, 0.95) 100%);
+    border: 1px solid rgba(168, 136, 74, 0.4);
+    transform-origin: 0% 50%;
+    transition:
+      transform var(--peek-duration-close) ease-in,
+      box-shadow var(--peek-duration-close) ease-in;
+    z-index: 3;
+    cursor: pointer;
+    will-change: transform;
+  }
+  .panel.peeking {
+    transform: rotateY(var(--peek-angle));
+    box-shadow: inset -12px 0 18px rgba(0, 0, 0, 0.7);
+    transition:
+      transform var(--peek-duration-open) ease-out,
+      box-shadow var(--peek-duration-open) ease-out;
+  }
+
+  /* Debug outline so you can see exactly where the panel sits relative to bg */
+  .stage.debug .panel { outline: 2px dashed #b26bff; outline-offset: -2px; }
+  .stage.debug .panel-backdrop { outline: 2px dashed #fcd34d; outline-offset: -2px; }
+
+  /* Side-by-side static states */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+  .compare .stage { margin: 0; }
+  .compare .panel { transition: none !important; }
+  .compare .stage.open .panel {
+    transform: rotateY(var(--peek-angle));
+    box-shadow: inset -12px 0 18px rgba(0, 0, 0, 0.7);
+  }
+
+  .caption {
+    text-align: center;
+    font-size: 12px;
+    color: rgba(245,233,210,0.7);
+    margin-top: 6px;
+  }
+
+  .info {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 30px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(245,233,210,0.8);
+  }
+  .info code { background: #3a0c16; padding: 2px 6px; border-radius: 3px; font-size: 12px; }
+  .info strong { color: #fcd34d; }
+</style>
+</head>
+<body>
+  <header>
+    <h1>Cabinet peek — motion preview</h1>
+    <div class="controls">
+      <button id="btnPeek">Trigger peek</button>
+      <button id="btnDebug">Toggle outline</button>
+      <button id="btnAuto" class="active">Auto every 4s: ON</button>
+      <label class="label" style="display:flex;align-items:center;gap:6px;margin-left:8px;">
+        Angle
+        <input id="angle" type="range" min="-30" max="0" value="-15" />
+        <span id="angleVal">-15°</span>
+      </label>
+    </div>
+  </header>
+
+  <div class="stage" id="liveStage">
+    <div class="bg"></div>
+    <div class="panel-backdrop"></div>
+    <div class="panel" id="livePanel"></div>
+  </div>
+  <div class="caption">Live: click the panel, hover it, or wait for the auto-peek timer.</div>
+
+  <div class="info">
+    <p><strong>Important:</strong> the brown gradient rectangle is a <em>placeholder</em>
+    for the panel — in production it'll be the actual panel art cropped out of
+    <code>bg.png</code>, so it'll be pixel-identical to the painted panel and
+    invisible when closed. The placeholder here is intentionally a different
+    color so you can see the rotation clearly.</p>
+    <p>The <strong>black silhouette</strong> behind the panel is the dark
+    backdrop — that's what shows in the wedge when the panel rotates open.</p>
+    <p>The <strong>hinge is on the outer/left edge</strong> (against the wall),
+    so the door swings toward the room. The angle slider lets you preview
+    different peek depths — current spec is <code>-15°</code>.</p>
+  </div>
+
+  <div class="compare">
+    <div>
+      <div class="stage">
+        <div class="bg"></div>
+        <div class="panel-backdrop"></div>
+        <div class="panel"></div>
+      </div>
+      <div class="caption">Closed (0°) — production panel will be invisible here</div>
+    </div>
+    <div>
+      <div class="stage open">
+        <div class="bg"></div>
+        <div class="panel-backdrop"></div>
+        <div class="panel"></div>
+      </div>
+      <div class="caption">Open (−15°) — hinge on outer edge</div>
+    </div>
+  </div>
+
+  <script>
+    const stage = document.getElementById('liveStage');
+    const panel = document.getElementById('livePanel');
+    const btnPeek = document.getElementById('btnPeek');
+    const btnDebug = document.getElementById('btnDebug');
+    const btnAuto = document.getElementById('btnAuto');
+    const angleInput = document.getElementById('angle');
+    const angleVal = document.getElementById('angleVal');
+
+    let phase = 'idle';
+    let autoEnabled = true;
+    let autoTimer = null;
+
+    function peek() {
+      if (phase !== 'idle') return;
+      phase = 'active';
+      panel.classList.add('peeking');
+      setTimeout(() => {
+        panel.classList.remove('peeking');
+        setTimeout(() => { phase = 'idle'; }, 500);
+      }, 350 + 1200);
+    }
+
+    function scheduleAuto() {
+      clearTimeout(autoTimer);
+      if (!autoEnabled) return;
+      // Demo uses 4s instead of 20-60s so you can see the rhythm quickly.
+      autoTimer = setTimeout(() => {
+        peek();
+        scheduleAuto();
+      }, 4000);
+    }
+
+    panel.addEventListener('mouseenter', peek);
+    panel.addEventListener('click', peek);
+    btnPeek.addEventListener('click', peek);
+
+    btnDebug.addEventListener('click', () => {
+      const on = stage.classList.toggle('debug');
+      document.querySelectorAll('.compare .stage').forEach(s => s.classList.toggle('debug', on));
+      btnDebug.classList.toggle('active', on);
+    });
+
+    btnAuto.addEventListener('click', () => {
+      autoEnabled = !autoEnabled;
+      btnAuto.classList.toggle('active', autoEnabled);
+      btnAuto.textContent = autoEnabled
+        ? 'Auto every 4s: ON'
+        : 'Auto every 4s: OFF';
+      if (autoEnabled) scheduleAuto();
+      else clearTimeout(autoTimer);
+    });
+
+    angleInput.addEventListener('input', (e) => {
+      const v = e.target.value;
+      angleVal.textContent = `${v}°`;
+      document.documentElement.style.setProperty('--peek-angle', `${v}deg`);
+    });
+
+    scheduleAuto();
+  </script>
+</body>
+</html>

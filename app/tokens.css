@@ -1,14 +1,14 @@
 :root {
   /* Color */
-  --ink-velvet-deep: #1A0508;
-  --ink-velvet: #3A0C16;
-  --ink-shadow: #0A0203;
-  --accent-mystic: #B26BFF;
-  --accent-mystic-deep: #5B1FAE;
-  --gold-primary: #E6D4A3;
-  --gold-stroke: #A8884A;
-  --gold-dim: #7A6336;
-  --text-primary: #F5E9D2;
+  --ink-velvet-deep: #1a0508;
+  --ink-velvet: #3a0c16;
+  --ink-shadow: #0a0203;
+  --accent-mystic: #b26bff;
+  --accent-mystic-deep: #5b1fae;
+  --gold-primary: #e6d4a3;
+  --gold-stroke: #a8884a;
+  --gold-dim: #7a6336;
+  --text-primary: #f5e9d2;
   --text-muted: rgba(245, 233, 210, 0.7);
   --scrim: rgba(0, 0, 0, 0.55);
 
@@ -23,12 +23,12 @@
   --shadow-3: 0 0 80px rgba(178, 107, 255, 0.45);
 
   /* CTA Variants */
-  --cta-green-top:    #4a5d3a;
+  --cta-green-top: #4a5d3a;
   --cta-green-bottom: #2b3a1f;
-  --cta-green-text:   #F5E9D2;
-  --cta-amber-top:    #6a4e2a;
+  --cta-green-text: #f5e9d2;
+  --cta-amber-top: #6a4e2a;
   --cta-amber-bottom: #3a2913;
-  --cta-amber-text:   #F5E9D2;
+  --cta-amber-text: #f5e9d2;
 
   /* Orb placement (overridden per breakpoint) */
   --orb-x: 50%;
@@ -47,7 +47,7 @@
 @media (max-width: 640px) {
   :root {
     --orb-y: 60%;
-    --rat-x: calc(100vw - 60px);
-    --rat-y: calc(100vh - 40px);
+    --rat-x: calc(100vw - 120px);
+    --rat-y: calc(100vh - 60px);
   }
 }
