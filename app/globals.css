@@ -100,12 +100,8 @@ body {
   .crystal-ball {
     width: clamp(140px, 42vw, 220px);
   }
-  /* image-relative crop, intentionally distinct from --orb-y (viewport-relative) */
-  .bg-scene-img {
-    object-position: center 40%;
-  }
   .orb-spacer {
-    height: clamp(240px, 62vw, 340px);
+    height: clamp(380px, 100vw, 460px);
   }
   .shelf-bottle,
   .hanging-bundle,
