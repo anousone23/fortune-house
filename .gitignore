@@ -57,3 +57,5 @@ verification/
 next-env.d.ts
 
 desaturate-smoke.py
+
+skills-lock.json
