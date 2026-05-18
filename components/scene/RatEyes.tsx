@@ -6,24 +6,13 @@
 // opacity. Position persists for the rest of the session; each interaction
 // toggles between the two spots.
 
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-
-type Side = "left" | "right";
-
-// Wrapper top-left positions. Both spots are on the same shelf (same Y);
-// "right" is just further right than "left" — the rat scoots a bit
-// along the floor, doesn't cross the room.
-const POSITIONS: Record<Side, { left: string; top: string }> = {
-  left:  { left: "calc(9vw - 8px)",   top: "calc(94vh - 13px)" },
-  right: { left: "calc(9vw + 200px)", top: "calc(94vh - 13px)" },
-};
 
 export default function RatEyes() {
   const controls = useAnimationControls();
   const phaseRef = useRef<"idle" | "active">("idle");
-  const [side, setSide] = useState<Side>("left");
   const reduce = useReducedMotion();
 
   const handleStartle = async () => {
@@ -50,13 +39,10 @@ export default function RatEyes() {
         });
       }
 
-      // 3. Teleport to the opposite shelf spot while invisible
-      setSide((prev) => (prev === "left" ? "right" : "left"));
-
-      // Wait for React to commit the new position
+      // 3. Wait briefly while invisible before fading back in
       await new Promise((r) => setTimeout(r, 80));
 
-      // 4. Slowly fade in at the new spot, scale back to idle
+      // 4. Slowly fade back in, scale back to idle
       await controls.start({
         opacity: 1,
         scale: 1,
@@ -69,8 +55,6 @@ export default function RatEyes() {
       phaseRef.current = "idle";
     }
   };
-
-  const pos = POSITIONS[side];
 
   return (
     <div
@@ -88,8 +72,8 @@ export default function RatEyes() {
         animate={controls}
         style={{
           position: "absolute",
-          left: pos.left,
-          top: pos.top,
+          left: "var(--rat-x)",
+          top: "var(--rat-y)",
           width: 32,
           height: 32,
           pointerEvents: "auto",

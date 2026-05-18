@@ -108,8 +108,7 @@ body {
     height: clamp(260px, 72vw, 320px);
   }
   .shelf-bottle,
-  .hanging-bundle,
-  .rat-eye {
+  .hanging-bundle {
     display: none;
   }
   .dust-mote:nth-child(n+7) {
@@ -122,6 +121,22 @@ body {
   .petal-falling img {
     width: 21px;
     height: 27px;
+  }
+  main::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.7) 0%,
+      rgba(0, 0, 0, 0.4) 40%,
+      transparent 100%
+    );
+    pointer-events: none;
+    z-index: 8;
   }
 }
 

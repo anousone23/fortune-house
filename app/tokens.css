@@ -34,6 +34,10 @@
   --orb-x: 50%;
   --orb-y: 64%;
 
+  /* Rat eyes placement (overridden per breakpoint) */
+  --rat-x: calc(9vw - 8px);
+  --rat-y: calc(94vh - 13px);
+
   /* Aspect ratio of the background image (bg.png).
      Shared by anything that needs to mimic the bg's object-fit: cover transform
      so children stay pinned to a point on the image regardless of viewport. */
@@ -43,5 +47,7 @@
 @media (max-width: 640px) {
   :root {
     --orb-y: 60%;
+    --rat-x: calc(100vw - 60px);
+    --rat-y: calc(100vh - 80px);
   }
 }
