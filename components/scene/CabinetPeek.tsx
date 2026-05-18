@@ -38,7 +38,7 @@ export default function CabinetPeek() {
         width: "max(100vw, calc(100dvh * var(--bg-aspect)))",
         height: "max(100dvh, calc(100vw / var(--bg-aspect)))",
         transform: "translate(-50%, -50%)",
-        perspective: 1200,
+        perspective: "1200px",
         zIndex: 2,
       }}
     >
@@ -61,9 +61,6 @@ export default function CabinetPeek() {
           top: PANEL_TOP,
           width: PANEL_WIDTH,
           height: PANEL_HEIGHT,
-          transformOrigin: "0% 50%",
-          pointerEvents: "auto",
-          cursor: "default",
         }}
       >
         <Image
@@ -71,7 +68,7 @@ export default function CabinetPeek() {
           alt=""
           fill
           sizes="20vw"
-          style={{ objectFit: "fill", display: "block" }}
+          style={{ objectFit: "cover", display: "block" }}
           priority={false}
         />
       </div>
