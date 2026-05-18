@@ -7,6 +7,7 @@ import MagicSparks from "@/components/scene/MagicSparks";
 import FallingPetals from "@/components/scene/FallingPetals";
 import DriedLeaves from "@/components/scene/DriedLeaves";
 import RatEyes from "@/components/scene/RatEyes";
+import CabinetPeek from "@/components/scene/CabinetPeek";
 import RitualWisps from "@/components/scene/RitualWisps";
 import Owl from "@/components/scene/Owl";
 import HangingBundle from "@/components/scene/HangingBundle";
@@ -47,6 +48,7 @@ export default function QuestionScene() {
         })}
         <Candelabra position="left" />
         <Candelabra position="right" />
+        <CabinetPeek />
         <Vignette />
         <CrystalBall />
         {/* <MagicSparks /> */}

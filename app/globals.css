@@ -1080,3 +1080,12 @@ body {
     opacity: 0;
   }
 }
+
+/* CabinetPeek — left cabinet peeking door. Mobile bg crop doesn't have a
+   matching slot for the painted panel, so hide entirely on mobile. Matches
+   the .owl-mount precedent above. */
+@media (max-width: 640px) {
+  .cabinet-peek {
+    display: none;
+  }
+}
