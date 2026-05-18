@@ -1,7 +1,22 @@
 "use client";
 
 // Cabinet peeking door — left cabinet only.
-// See docs/superpowers/specs/2026-05-18-cabinet-peeking-door-design.md
+//
+// Layering (z within component):
+//   1. dark backdrop (rectangle, same footprint as panel) — what shows in
+//      the wedge when the panel rotates open
+//   2. panel overlay (cabinet-panel-left.png cropped from bg.png) — sits
+//      pixel-aligned over the painted panel; rotates -15deg on outer-edge
+//      hinge to reveal a sliver of the backdrop
+//
+// Positioning: the outer bg-aspect-cover wrapper mirrors bg.png's
+// object-fit:cover rectangle, so percentage-positioned children pin to the
+// bg image, not the viewport. Mirror of Owl.tsx pattern.
+//
+// Mobile (<=640px): the whole component is display:none via .cabinet-peek
+// in app/globals.css (matches .owl-mount precedent — scaled mobile bg
+// doesn't have a matching slot for the painted panel).
+//
 // Phase ref + async controls pattern mirrors RatEyes.tsx.
 
 import { useRef } from "react";
@@ -55,6 +70,7 @@ export default function CabinetPeek() {
         zIndex: 2,
       }}
     >
+      {/* Dark backdrop — sits exactly under the panel */}
       <div
         style={{
           position: "absolute",
@@ -65,6 +81,7 @@ export default function CabinetPeek() {
           background: "#050203",
         }}
       />
+      {/* Panel overlay — pixel-aligned with painted panel; rotates on hinge */}
       <motion.div
         onMouseEnter={peek}
         onClick={peek}
@@ -78,7 +95,6 @@ export default function CabinetPeek() {
           transformOrigin: "0% 50%",
           pointerEvents: "auto",
           cursor: "default",
-          willChange: "transform",
         }}
       >
         <Image
