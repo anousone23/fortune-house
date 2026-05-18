@@ -104,6 +104,9 @@ body {
     transform: scale(1.18);
     transform-origin: bottom center;
   }
+  .candelabra {
+    width: clamp(48px, 12vw, 70px);
+  }
   .orb-spacer {
     height: clamp(260px, 72vw, 320px);
   }
@@ -515,12 +518,6 @@ body {
 .candelabra[data-side="right"] {
   left: calc(var(--orb-x) + clamp(105px, 13.3vw, 210px));
   transform: translate(-50%, -50%);
-}
-
-@media (max-width: 640px) {
-  .candelabra {
-    display: none;
-  }
 }
 
 .hanging-bundle {
