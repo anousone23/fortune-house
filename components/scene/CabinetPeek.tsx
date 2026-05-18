@@ -67,7 +67,11 @@ export default function CabinetPeek() {
         RANDOM_MIN_MS + Math.random() * (RANDOM_MAX_MS - RANDOM_MIN_MS);
       timer = setTimeout(async () => {
         if (cancelled) return;
-        await peek();
+        try {
+          await peek();
+        } catch {
+          // controls.start rejects on unmount during animation — ignore
+        }
         if (!cancelled) schedule();
       }, delay);
     };
