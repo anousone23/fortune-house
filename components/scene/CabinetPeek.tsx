@@ -55,10 +55,12 @@ export default function CabinetPeek() {
         });
         await new Promise((r) => setTimeout(r, HOLD_MS));
         await controls.start({
-          filter: "brightness(1)",
+          filter: "none",
           transition: { duration: 0.2 },
         });
       } else {
+        // Clear any lingering filter from a prior reduced-motion peek.
+        controls.set({ filter: "none" });
         await controls.start({
           rotateY: PEEK_ANGLE_DEG,
           transition: { duration: OPEN_MS / 1000, ease: "easeOut" },
