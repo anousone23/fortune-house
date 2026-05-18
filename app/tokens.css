@@ -48,6 +48,6 @@
   :root {
     --orb-y: 60%;
     --rat-x: calc(100vw - 60px);
-    --rat-y: calc(100vh - 80px);
+    --rat-y: calc(100vh - 60px);
   }
 }
