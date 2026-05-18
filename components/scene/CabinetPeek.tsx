@@ -34,8 +34,8 @@ const OPEN_MS = 350;
 const HOLD_MS = 1200;
 const CLOSE_MS = 500;
 
-const RANDOM_MIN_MS = 20_000;
-const RANDOM_MAX_MS = 60_000;
+const RANDOM_MIN_MS = 3_000;
+const RANDOM_MAX_MS = 8_000;
 
 export default function CabinetPeek() {
   const controls = useAnimationControls();
