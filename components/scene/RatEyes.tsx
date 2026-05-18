@@ -1,21 +1,35 @@
 "use client";
 
 // Two red glowing dots — a rat hiding in the dark, peeking from one corner.
-// On hover or click: eyes grow ("startled") → slowly fade to opacity 0 →
-// teleport to the other spot on the same shelf → slowly fade back to full
-// opacity. Position persists for the rest of the session; each interaction
-// toggles between the two spots.
+// On desktop, hover/click triggers a startle: eyes grow, fade out, teleport
+// to the other shelf spot, fade back in. Mobile is blink-only — position
+// comes from the --rat-x / --rat-y CSS vars (bottom-right corner) and the
+// interaction handlers are no-ops.
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useIsMobile } from "@/hooks/useIsMobile";
+
+type Side = "left" | "right";
+
+// Wrapper top-left positions. Both spots are on the same shelf (same Y);
+// "right" is just further right than "left" — the rat scoots a bit
+// along the floor, doesn't cross the room.
+const POSITIONS: Record<Side, { left: string; top: string }> = {
+  left:  { left: "calc(9vw - 8px)",   top: "calc(94vh - 13px)" },
+  right: { left: "calc(9vw + 200px)", top: "calc(94vh - 13px)" },
+};
 
 export default function RatEyes() {
   const controls = useAnimationControls();
   const phaseRef = useRef<"idle" | "active">("idle");
+  const [side, setSide] = useState<Side>("left");
   const reduce = useReducedMotion();
+  const isMobile = useIsMobile();
 
   const handleStartle = async () => {
+    if (isMobile) return;
     if (phaseRef.current !== "idle") return;
     phaseRef.current = "active";
 
@@ -39,10 +53,13 @@ export default function RatEyes() {
         });
       }
 
-      // 3. Wait briefly while invisible before fading back in
+      // 3. Teleport to the opposite shelf spot while invisible
+      setSide((prev) => (prev === "left" ? "right" : "left"));
+
+      // Wait for React to commit the new position
       await new Promise((r) => setTimeout(r, 80));
 
-      // 4. Slowly fade back in, scale back to idle
+      // 4. Slowly fade in at the new spot, scale back to idle
       await controls.start({
         opacity: 1,
         scale: 1,
@@ -51,19 +68,18 @@ export default function RatEyes() {
           : { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
       });
     } finally {
-      // Always reset, even if something above throws
       phaseRef.current = "idle";
     }
   };
+
+  const pos = isMobile
+    ? { left: "var(--rat-x)", top: "var(--rat-y)" }
+    : POSITIONS[side];
 
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none absolute inset-0"
-      // z-index 15 sits above the form container (z-10). The new right
-      // position lands inside the form's bounding box on smaller viewports;
-      // without raising the rat above the form, the form's bbox captures
-      // hovers before they reach the rat.
       style={{ zIndex: 15 }}
     >
       <motion.div
@@ -72,11 +88,11 @@ export default function RatEyes() {
         animate={controls}
         style={{
           position: "absolute",
-          left: "var(--rat-x)",
-          top: "var(--rat-y)",
+          left: pos.left,
+          top: pos.top,
           width: 32,
           height: 32,
-          pointerEvents: "auto",
+          pointerEvents: isMobile ? "none" : "auto",
           cursor: "default",
         }}
       >
