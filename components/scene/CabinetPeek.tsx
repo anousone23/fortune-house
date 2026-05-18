@@ -22,6 +22,7 @@
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { motion, useAnimationControls } from "framer-motion";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const PANEL_LEFT = "9.5%";
 const PANEL_TOP = "44%";
@@ -39,20 +40,35 @@ const RANDOM_MAX_MS = 60_000;
 export default function CabinetPeek() {
   const controls = useAnimationControls();
   const phaseRef = useRef<"idle" | "active">("idle");
+  const reduce = useReducedMotion();
 
   const peek = async () => {
     if (phaseRef.current !== "idle") return;
     phaseRef.current = "active";
     try {
-      await controls.start({
-        rotateY: PEEK_ANGLE_DEG,
-        transition: { duration: OPEN_MS / 1000, ease: "easeOut" },
-      });
-      await new Promise((r) => setTimeout(r, HOLD_MS));
-      await controls.start({
-        rotateY: 0,
-        transition: { duration: CLOSE_MS / 1000, ease: "easeIn" },
-      });
+      if (reduce) {
+        // Reduced motion: no rotation. Brief brightness dip on the panel art
+        // so the gesture still reads as "something happened in the cabinet."
+        await controls.start({
+          filter: "brightness(0.7)",
+          transition: { duration: 0.2 },
+        });
+        await new Promise((r) => setTimeout(r, HOLD_MS));
+        await controls.start({
+          filter: "brightness(1)",
+          transition: { duration: 0.2 },
+        });
+      } else {
+        await controls.start({
+          rotateY: PEEK_ANGLE_DEG,
+          transition: { duration: OPEN_MS / 1000, ease: "easeOut" },
+        });
+        await new Promise((r) => setTimeout(r, HOLD_MS));
+        await controls.start({
+          rotateY: 0,
+          transition: { duration: CLOSE_MS / 1000, ease: "easeIn" },
+        });
+      }
     } finally {
       phaseRef.current = "idle";
     }
