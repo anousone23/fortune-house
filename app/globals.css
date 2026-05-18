@@ -98,7 +98,7 @@ body {
 }
 @media (max-width: 640px) {
   .crystal-ball {
-    width: clamp(140px, 42vw, 220px);
+    width: clamp(160px, 48vw, 240px);
   }
   .bg-scene-img {
     transform: scale(1.18);
